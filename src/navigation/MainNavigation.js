@@ -6,6 +6,9 @@ import TabNavigation from "./TabNavigation";
 import DetailsTour from "../views/Tour/DetailsTour";
 import Favorite from "../views/Favorite";
 import HoaDon from "../views/HoaDon";
+import TourPost from "../views/Tour/TourPost";
+import HomeScreen from "../views/HomeScreen";
+import TourScreen from "../views/Tour/TourScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,10 +19,12 @@ function HomeStackScreen() {
             screenOptions={{ headerShown: false }}
         >
             <Stack.Screen name="TabScreen" component={TabNavigation} />
-
+            <Stack.Screen name="HomeScreen" component={HomeScreen} />
             <Stack.Screen name="DetailsTour" component={DetailsTour} />
             <Stack.Screen name="Favorite" component={Favorite} />
             <Stack.Screen name="HoaDon" component={HoaDon} />
+            <Stack.Screen name="TourPost" component={TourPost} />
+            <Stack.Screen name="TourScreen" component={TourScreen} />
         </Stack.Navigator>
     );
 }

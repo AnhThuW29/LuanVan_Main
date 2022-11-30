@@ -5,10 +5,10 @@ import axios from "axios";
 function App() {
     const fetchAPI = async () => {
         try {
-            const res = await axios.get("http://192.168.88.109:9000/");
+            const res = await axios.get("http://192.168.88.108:9000/");
             console.log(res.data);
         } catch (error) {
-            console.log("LỖI: ", error.message);
+            console.log("LỖI App: ", error.message);
         }
     };
 

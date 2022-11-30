@@ -1,31 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
     StyleSheet,
-    Text,
     View,
     TextInput,
-    // StatusBar,
+    Text,
     ScrollView,
-    RefreshControl,
     FlatList,
+    Dimensions,
     TouchableOpacity,
     ImageBackground,
-    Dimensions,
+    Pressable,
+    RefreshControl,
 } from "react-native";
-import COLORS from "../consts/color";
+import COLORS from "../../consts/color";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import CustomIcon from "../consts/CustomIcon";
-import axiosClient from "../api/axiosClient";
-
-import image from "../assets/Bear.jpg";
+import axiosClient from "../../api/axiosClient";
+import image from "../../assets/Bear.jpg";
 
 const { width } = Dimensions.get("screen");
-
 const wait = (timeout) => {
     return new Promise((resolve) => setTimeout(resolve, timeout));
 };
 
-function HomeScreen({ navigation }) {
+const TourScreen = ({ navigation }) => {
     const [posts, setPosts] = useState([]);
     const [filter, setFilter] = useState([]);
     const [search, setSearch] = useState();
@@ -42,37 +39,64 @@ function HomeScreen({ navigation }) {
             });
     }, []);
 
-    const ListCategories = (name) => {
+    const tourCategories = [
+        {
+            id: 1,
+            name: "Tour thiên nhiên",
+        },
+        {
+            id: 2,
+            name: "Tour biển",
+        },
+        {
+            id: 3,
+            name: "Tour tham quan - văn hóa",
+        },
+        {
+            id: 4,
+            name: "Tour gia đình",
+        },
+        {
+            id: 5,
+            name: "Tour sinh thái",
+        },
+        {
+            id: 6,
+            name: "Tour nghĩ dưỡng",
+        },
+    ];
+
+    const [selected, setSelected] = useState(0);
+
+    const handleClick = (id) => {
+        setSelected(id);
+    };
+
+    // Chọn theo loại
+    const TourTopicList = ({ item }) => {
         return (
-            <View key={name} style={styles.categoryContainer}>
-                <CustomIcon
-                    key="tour"
-                    iconName="beach-access"
-                    text="Tour"
-                    onPress={() => navigation.navigate("TourScreen")}
-                />
-                <CustomIcon
-                    key="hotel"
-                    iconName="apartment"
-                    text="Khách sạn"
-                    // onPress={() => navigation.navigate("HotelScreen")}
-                />
-                <CustomIcon
-                    key="favorite"
-                    iconName="favorite"
-                    text="Yêu thích"
-                    onPress={() => navigation.navigate("Favorite")}
-                />
-                <CustomIcon
-                    key="map"
-                    iconName="place"
-                    text="Bản đồ"
-                    //onPress={() => navigation.navigate('Map')}
-                />
+            <View key={item.id} style={styles.categoryContainer}>
+                <Pressable
+                    activeOpacity={0.8}
+                    onPress={() => handleClick(item.id)}
+                >
+                    <View
+                        style={{
+                            ...styles.tourList,
+                            backgroundColor:
+                                selected === item.id
+                                    ? COLORS.orange
+                                    : COLORS.primary,
+                        }}
+                    >
+                        <Text>{item.name}</Text>
+                    </View>
+                </Pressable>
             </View>
         );
     };
 
+    // Card info
     const Card = ({ post, index }) => {
         return (
             <View key={index} style={{ marginVertical: 20 }}>
@@ -84,11 +108,7 @@ function HomeScreen({ navigation }) {
                         })
                     }
                 >
-                    <ImageBackground
-                        style={styles.cardImage}
-                        // source={{ uri: post.thumbnail.url }}
-                        source={image}
-                    >
+                    <ImageBackground style={styles.cardImage} source={image}>
                         <Text
                             style={{
                                 color: COLORS.white,
@@ -129,7 +149,7 @@ function HomeScreen({ navigation }) {
                                     width: 80,
                                 }}
                             >
-                                {/* <Icon
+                                <Icon
                                     name="star"
                                     size={20}
                                     color={COLORS.white}
@@ -141,21 +161,7 @@ function HomeScreen({ navigation }) {
                                     }}
                                 >
                                     5.0
-                                </Text> */}
-                                {/* <Icon
-                                    name="edit"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() =>
-                                        navigation.navigate("EditTour", post)
-                                    }
-                                />
-                                <Icon
-                                    name="delete"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() => handleDelete(post._id)}
-                                /> */}
+                                </Text>
                             </View>
                         </View>
                     </ImageBackground>
@@ -180,19 +186,6 @@ function HomeScreen({ navigation }) {
             </View>
         );
     };
-
-    // Delete
-    // const handleDelete = (postId) => {
-    //     axiosClient
-    //         .delete(`/tour-post/${postId}`)
-    //         .then((res) => {
-    //             console.log("ok");
-    //             setPost(res.data);
-    //         })
-    //         .catch((err) => {
-    //             console.log("LOI: ", err);
-    //         });
-    // };
 
     // Search
     const searchFilter = (text) => {
@@ -221,17 +214,31 @@ function HomeScreen({ navigation }) {
     }, []);
 
     return (
-        <View style={styles.AndroidSafeArea}>
+        <View style={{ flex: 1 }}>
             {/* <StatusBar translucent={false} backgroundColor={COLORS.white} /> */}
             <View style={styles.header}>
-                <Icon name="sort" size={28} color={COLORS.white} />
+                <Icon
+                    name="arrow-back-ios"
+                    size={24}
+                    color={COLORS.white}
+                    onPress={navigation.goBack}
+                />
+                <Text>Xin chào, Anh Thư</Text>
                 <Icon
                     name="notifications-none"
-                    size={28}
+                    size={24}
                     color={COLORS.white}
                 />
             </View>
-
+            <View style={styles.inputContainer}>
+                <Icon name="search" size={24} />
+                <TextInput
+                    placeholder="Tìm kiếm"
+                    style={{ color: COLORS.grey, paddingLeft: 5 }}
+                    // value={search}
+                    onChangeText={(text) => searchFilter(text)}
+                />
+            </View>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 refreshControl={
@@ -241,40 +248,28 @@ function HomeScreen({ navigation }) {
                     />
                 }
             >
-                <View
-                    style={{
-                        backgroundColor: COLORS.primary,
-                        height: 120,
-                        paddingHorizontal: 20,
-                    }}
-                >
-                    <View>
-                        <Text style={styles.headerTitle}>Cùng khám phá</Text>
-                        <Text style={styles.headerTitle}>
-                            top địa điểm ở Việt Nam
-                        </Text>
-                        <View style={styles.inputContainer}>
-                            <Icon name="search" size={28} />
-                            <TextInput
-                                placeholder="Tìm kiếm"
-                                style={{ color: COLORS.grey }}
-                                onChangeText={(text) => searchFilter(text)}
-                            />
-                        </View>
-                    </View>
-                </View>
-
-                <ListCategories />
-
-                <Text style={styles.sectionTitle}>Địa điểm yêu thích</Text>
+                <Text style={styles.sectionTitle}>
+                    Vị trí hiện tại của bạn: Ninh Kiều
+                </Text>
 
                 <View>
                     <FlatList
+                        snapToAlignment={width - 20}
                         contentContainerStyle={{ paddingLeft: 20 }}
                         horizontal
                         showsHorizontalScrollIndicator={false}
+                        data={tourCategories}
+                        renderItem={({ item }) => <TourTopicList item={item} />}
+                        keyExtractor={(item) => item.key}
+                    />
+                </View>
+
+                <View style={{ marginTop: 20 }}>
+                    <FlatList
+                        contentContainerStyle={{ paddingLeft: 20 }}
+                        // horizontal
+                        showsHorizontalScrollIndicator={false}
                         data={filter}
-                        // renderItem={({ item }) => <Card place={item} />}
                         renderItem={({ item }) => {
                             return <Card post={item} />;
                         }}
@@ -286,16 +281,11 @@ function HomeScreen({ navigation }) {
             </ScrollView>
         </View>
     );
-}
+};
 
-export default HomeScreen;
+export default TourScreen;
 
 const styles = StyleSheet.create({
-    AndroidSafeArea: {
-        flex: 1,
-        backgroundColor: "white",
-        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    },
     header: {
         paddingVertical: 20,
         paddingHorizontal: 20,
@@ -308,53 +298,57 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 23,
     },
-
     inputContainer: {
-        height: 60,
-        width: "100%",
+        height: 50,
+        width: "88%",
         backgroundColor: COLORS.white,
         borderRadius: 10,
         position: "absolute",
-        top: 90,
+        top: 70,
         flexDirection: "row",
-        paddingHorizontal: 20,
+        paddingLeft: 20,
+        marginHorizontal: 20,
         alignItems: "center",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.1,
         shadowRadius: 5,
     },
-    categoryContainer: {
-        marginTop: 40,
-        marginHorizontal: 20,
-        flexDirection: "row",
-        justifyContent: "space-between",
-    },
     sectionTitle: {
+        paddingVertical: 15,
         marginHorizontal: 20,
-        marginVertical: 20,
-        fontWeight: "bold",
-        fontSize: 20,
+        marginTop: 50,
+    },
+    categoryContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+    },
+    tourList: {
+        height: 40,
+        backgroundColor: COLORS.primary,
+        padding: 10,
+        borderRadius: 20,
+        marginRight: 10,
     },
     cardImage: {
-        height: 200,
         width: width - 40,
+        height: 200,
         marginRight: 20,
-        padding: 10,
-        overflow: "hidden",
         borderRadius: 10,
+        overflow: "hidden",
+        padding: 10,
     },
     details: {
-        width: width - 50,
+        width: width - 200,
         marginTop: 10,
     },
     tourName: {
         overflow: "hidden",
-        height: 28,
+        height: 20,
         color: "#666666",
     },
     textDetails: {
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: "bold",
     },
 });

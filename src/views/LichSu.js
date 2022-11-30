@@ -3,7 +3,6 @@ import {
     View,
     Text,
     StyleSheet,
-    SafeAreaView,
     TouchableOpacity,
     Image,
     FlatList,
@@ -11,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../consts/color";
 
-function MyCart({ route, navigation }) {
+function LichSu({ route, navigation }) {
     // const { post } = route.params;
     // const [product, setProduct] = useState(post);
 
@@ -31,13 +30,13 @@ function MyCart({ route, navigation }) {
     );
 }
 
-export default MyCart;
+export default LichSu;
 
 const styles = StyleSheet.create({
     AndroidSafeArea: {
         flex: 1,
         backgroundColor: "white",
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     header: {
         flexDirection: "row",

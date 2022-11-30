@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import HomeScreen from "../views/HomeScreen";
 import PostScreen from "../views/PostScreen";
 import AccountScreen from "../views/User/AccountScreen";
-import MyCart from "../views/MyCart";
+import LichSu from "../views/LichSu";
 
 const Tab = createBottomTabNavigator();
 
@@ -43,7 +43,7 @@ const TabNavigation = () => {
             />
             <Tab.Screen
                 name="Đơn hàng"
-                component={MyCart}
+                component={LichSu}
                 options={{
                     tabBarIcon: ({ color, size }) => {
                         return (

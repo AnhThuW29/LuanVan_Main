@@ -17,19 +17,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HoaDon({ route, navigation }) {
     const { post } = route.params;
-    const [product, setProduct] = useState(post);
-    // const [data, setData] = useState([]);
+    const [product, setProduct] = useState();
 
-    const onChangeQtt = ({ type }) => {
-        let temp = product.post.quantity;
-        console.log(temp);
-        if (type) {
-            temp = temp + 1;
-            product.post.quantity = temp;
-            setProduct({ product: product.post.quantity });
-        } else {
-            alert("Remove");
+    const handleDecrease = () => {
+        if (post.post.quantity > 0) {
+            setProduct((post.post.quantity -= 1));
         }
+    };
+    const handleIncrease = () => {
+        setProduct((post.post.quantity += 1));
     };
 
     return (
@@ -55,7 +51,7 @@ function HoaDon({ route, navigation }) {
                     </View>
                     <View style={styles.infoItemRightWrapper}>
                         <Text style={styles.infoItemText}>
-                            {product.post.TieuDe}
+                            {post.post.TieuDe}
                         </Text>
                     </View>
                 </View>
@@ -65,7 +61,7 @@ function HoaDon({ route, navigation }) {
                     </View>
                     <View style={styles.infoItemRightWrapper}>
                         <Text style={styles.infoItemText}>
-                            {product.post.DiaDiem}
+                            {post.post.DiaDiem}
                         </Text>
                     </View>
                 </View>
@@ -75,20 +71,11 @@ function HoaDon({ route, navigation }) {
                     </View>
                     <View style={styles.infoItemRightWrapper}>
                         <Text style={styles.infoItemText}>
-                            {product.post.NguoiHuongDan}
+                            {post.post.NguoiHuongDan}
                         </Text>
                     </View>
                 </View>
-                {/* <View style={styles.infoWrapper}>
-                    <View style={styles.infoItemLeftWrapper}>
-                        <Text style={styles.infoItemTitle}>Giá vé 1 người</Text>
-                    </View>
-                    <View style={styles.infoItemRightWrapper}>
-                        <Text style={styles.infoItemText}>
-                            {product.post.Gia}
-                        </Text>
-                    </View>
-                </View> */}
+
                 <View style={styles.infoWrapper}>
                     <View style={styles.infoItemLeftWrapper}>
                         <Text style={styles.infoItemTitle}>Chọn ngày</Text>
@@ -114,6 +101,7 @@ function HoaDon({ route, navigation }) {
                                     padding: 4,
                                     opacity: 0.5,
                                 }}
+                                onPress={handleDecrease}
                             >
                                 <Icon
                                     name="remove-circle-outline"
@@ -123,13 +111,14 @@ function HoaDon({ route, navigation }) {
                                     }}
                                 />
                             </TouchableOpacity>
-                            <Text>{product.post.quantity}</Text>
+                            <Text>{post.post.quantity}</Text>
                             <TouchableOpacity
                                 style={{
                                     marginLeft: 20,
                                     padding: 4,
                                     opacity: 0.5,
                                 }}
+                                onPress={handleIncrease}
                             >
                                 <Icon
                                     name="add-circle-outline"
@@ -137,12 +126,24 @@ function HoaDon({ route, navigation }) {
                                         fontSize: 20,
                                         color: COLORS.orange,
                                     }}
-                                    onPress={() => onChangeQtt(true)}
                                 />
                             </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+                <TouchableOpacity
+                    style={{
+                        backgroundColor: COLORS.white,
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        paddingVertical: 10,
+                        borderBottomWidth: 1,
+                        borderBottomColor: "#f2f2f2",
+                    }}
+                    // onPress={() => navigation.navigate("DetailsTour")}
+                >
+                    <Text style={styles.infoItemTitle}>Xem chi tiết</Text>
+                </TouchableOpacity>
                 {/* Thông tin người đặt */}
                 <View style={styles.textTitleWrapper}>
                     <Text style={styles.textTitle}>THÔNG TIN NGƯỜI ĐẶT</Text>
@@ -152,7 +153,7 @@ function HoaDon({ route, navigation }) {
                         <Text style={styles.infoItemTitle}>Họ và tên</Text>
                     </View>
                     <View style={styles.infoItemRightWrapper}>
-                        <Text style={styles.infoItemText}>Thu</Text>
+                        <Text style={styles.infoItemText}>Thư</Text>
                     </View>
                 </View>
                 <View style={styles.infoWrapper}>
@@ -187,7 +188,7 @@ function HoaDon({ route, navigation }) {
                             fontSize: 18,
                         }}
                     >
-                        {product.post.Gia * product.post.quantity} VND
+                        {post.post.Gia * post.post.quantity} VND
                     </Text>
                 </View>
                 <TouchableOpacity style={styles.btnBookNow}>
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     AndroidSafeArea: {
         flex: 1,
         backgroundColor: "white",
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     header: {
         flexDirection: "row",

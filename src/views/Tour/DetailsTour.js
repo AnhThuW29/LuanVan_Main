@@ -3,7 +3,6 @@ import {
     ScrollView,
     StyleSheet,
     ImageBackground,
-    StatusBar,
     View,
     Text,
     TouchableOpacity,
@@ -19,7 +18,7 @@ const DetailsTour = ({ navigation, route }) => {
 
     return (
         <View style={styles.AndroidSafeArea}>
-            <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
+            {/* <StatusBar translucent backgroundColor="rgba(0,0,0,0)" /> */}
 
             <ScrollView showsVerticalScrollIndicator={false}>
                 <ImageBackground
@@ -234,7 +233,6 @@ const styles = StyleSheet.create({
     AndroidSafeArea: {
         flex: 1,
         backgroundColor: "white",
-        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     btnBookNow: {
         height: 50,
