@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import HomeScreen from "../views/HomeScreen";
 import PostScreen from "../views/PostScreen";
 import AccountScreen from "../views/User/AccountScreen";
-import LichSu from "../views/LichSu";
+import LichSu from "../views/GiaoDich/LichSu";
 
 const Tab = createBottomTabNavigator();
 

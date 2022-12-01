@@ -22,12 +22,12 @@ const TourPost = ({ navigation }) => {
     const [error, setError] = useState("");
     const [posts, setPosts] = useState({
         TieuDe: "",
-        LoaiTour: "",
+        LoaiTour: { TenLoaiTour: "" },
         MoTa: "",
         DiaDiem: "",
         ThanhPho: "",
         LichTrinh: "",
-        KhachSan: "",
+        KhachSan: { TenKhachSan: "" },
         NguoiHuongDan: "",
         SoNgay: "",
         Gia: "",
@@ -71,12 +71,12 @@ const TourPost = ({ navigation }) => {
         axiosClient
             .post("/v1/tour/add", {
                 TieuDe,
-                LoaiTour,
+                LoaiTour: { TenLoaiTour: LoaiTour },
                 MoTa,
                 DiaDiem,
                 ThanhPho,
                 LichTrinh,
-                KhachSan,
+                KhachSan: { TenKhachSan: KhachSan },
                 NguoiHuongDan,
                 SoNgay,
                 Gia,
@@ -87,7 +87,7 @@ const TourPost = ({ navigation }) => {
             })
             .then((res) => {
                 setPosts(res.data);
-                navigation.navigate("HomeScreen");
+                navigation.navigate("TabNavigation");
             })
             .catch((err) => {
                 console.log(err);

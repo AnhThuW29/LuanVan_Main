@@ -25,9 +25,11 @@ const HotelPost = ({ navigation }) => {
     const [posts, setPosts] = useState({
         TenKhachSan: "",
         DiaChi: "",
+        Phong: "",
         MoTa: "",
         Email: "",
         SDT: "",
+        // HinhAnh,
     });
 
     const { TieuDe, MoTa, DiaChi, Email, SDT } = posts;
@@ -49,18 +51,11 @@ const HotelPost = ({ navigation }) => {
 
         axiosClient
             .post("/v1/tour/add", {
-                title,
-                content,
-                place,
-                city,
-                email,
-                phone,
-                startDate,
-                endDate,
-                range,
-                price,
-                tags,
-                schedule,
+                TenKhachSan,
+                DiaChi,
+                MoTa,
+                Email,
+                SDT,
                 // thumbnail,
             })
             .then((res) => {

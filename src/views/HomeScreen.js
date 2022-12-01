@@ -27,6 +27,7 @@ const wait = (timeout) => {
 
 function HomeScreen({ navigation }) {
     const [posts, setPosts] = useState([]);
+    const [hotel, setHotel] = useState([]);
     const [filter, setFilter] = useState([]);
     const [search, setSearch] = useState();
 
@@ -35,6 +36,15 @@ function HomeScreen({ navigation }) {
             .get("/v1/tour/getall")
             .then((res) => {
                 setPosts(res.data);
+                setFilter(res.data);
+            })
+            .catch((err) => {
+                console.log("LỖI: ", err);
+            });
+        axiosClient
+            .get("/v1/khachsan/getall")
+            .then((res) => {
+                setHotel(res.data);
                 setFilter(res.data);
             })
             .catch((err) => {
@@ -75,7 +85,7 @@ function HomeScreen({ navigation }) {
 
     const Card = ({ post, index }) => {
         return (
-            <View key={index} style={{ marginVertical: 20 }}>
+            <View key={index} style={{ marginVertical: 5 }}>
                 <TouchableOpacity
                     activeOpacity={0.8}
                     onPress={() =>
@@ -174,6 +184,114 @@ function HomeScreen({ navigation }) {
                             ]}
                         >
                             {post.Gia}
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        );
+    };
+
+    const CardHotel = ({ hotel, index }) => {
+        return (
+            <View key={index} style={{ marginVertical: 5 }}>
+                <TouchableOpacity
+                    activeOpacity={0.8}
+                    // onPress={() =>
+                    //     navigation.navigate("DetailsTour", {
+                    //         hotel,
+                    //     })
+                    // }
+                >
+                    <ImageBackground
+                        style={styles.cardImage}
+                        // source={{ uri: post.thumbnail.url }}
+                        source={image}
+                    >
+                        <Text
+                            style={{
+                                color: COLORS.white,
+                                fontSize: 22,
+                                fontWeight: "bold",
+                                marginTop: 10,
+                            }}
+                        >
+                            {hotel.TenKhachSan}
+                        </Text>
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "space-between",
+                                flexDirection: "row",
+                                alignItems: "flex-end",
+                            }}
+                        >
+                            <View style={{ flexDirection: "row" }}>
+                                <Icon
+                                    name="place"
+                                    size={20}
+                                    color={COLORS.white}
+                                />
+                                <Text
+                                    style={{
+                                        marginLeft: 5,
+                                        color: COLORS.white,
+                                    }}
+                                >
+                                    {/* {hotel.DiaChi.TinhTP} */}
+                                </Text>
+                            </View>
+                            <View
+                                style={{
+                                    flexDirection: "row",
+                                    justifyContent: "space-around",
+                                    width: 80,
+                                }}
+                            >
+                                {/* <Icon
+                                    name="star"
+                                    size={20}
+                                    color={COLORS.white}
+                                />
+                                <Text
+                                    style={{
+                                        marginLeft: 5,
+                                        color: COLORS.white,
+                                    }}
+                                >
+                                    5.0
+                                </Text> */}
+                                {/* <Icon
+                                    name="edit"
+                                    size={28}
+                                    color={COLORS.white}
+                                    onPress={() =>
+                                        navigation.navigate("EditTour", post)
+                                    }
+                                />
+                                <Icon
+                                    name="delete"
+                                    size={28}
+                                    color={COLORS.white}
+                                    onPress={() => handleDelete(post._id)}
+                                /> */}
+                            </View>
+                        </View>
+                    </ImageBackground>
+                    <View style={styles.details}>
+                        <Text
+                            style={[styles.textDetails, styles.tourName]}
+                            ellipsizeMode="tail"
+                            numberOfLines={1}
+                        >
+                            {hotel.TenKhachSan}
+                        </Text>
+                        <Text
+                            style={[
+                                styles.textDetails,
+                                { color: COLORS.orange },
+                            ]}
+                        >
+                            {/* {hotel.Phong.GiaPhong} */}
                         </Text>
                     </View>
                 </TouchableOpacity>
@@ -280,6 +398,23 @@ function HomeScreen({ navigation }) {
                         }}
                         keyExtractor={(post) => {
                             post._id;
+                        }}
+                    />
+                </View>
+
+                <Text style={styles.sectionTitle}>Khách sạn</Text>
+                <View>
+                    <FlatList
+                        contentContainerStyle={{ paddingLeft: 20 }}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={filter}
+                        // renderItem={({ item }) => <Card place={item} />}
+                        renderItem={({ item }) => {
+                            return <CardHotel hotel={item} />;
+                        }}
+                        keyExtractor={(hotel) => {
+                            hotel._id;
                         }}
                     />
                 </View>

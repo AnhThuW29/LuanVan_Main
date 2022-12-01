@@ -12,7 +12,7 @@ import {
     Button,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
-import COLORS from "../consts/color";
+import COLORS from "../../consts/color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function HoaDon({ route, navigation }) {
