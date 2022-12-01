@@ -3,12 +3,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import TabNavigation from "./TabNavigation";
+import HomeScreen from "../views/HomeScreen";
 import DetailsTour from "../views/Tour/DetailsTour";
 import Favorite from "../views/Favorite";
 import HoaDon from "../views/GiaoDich/HoaDon";
 import TourPost from "../views/Tour/TourPost";
-import HomeScreen from "../views/HomeScreen";
 import TourScreen from "../views/Tour/TourScreen";
+import HotelPost from "../views/Hotel/HotelPost";
+import ChiTietHoaDon from "../views/GiaoDich/ChiTietHoaDon";
 
 const Stack = createNativeStackNavigator();
 
@@ -25,6 +27,8 @@ function HomeStackScreen() {
             <Stack.Screen name="HoaDon" component={HoaDon} />
             <Stack.Screen name="TourPost" component={TourPost} />
             <Stack.Screen name="TourScreen" component={TourScreen} />
+            <Stack.Screen name="HotelPost" component={HotelPost} />
+            <Stack.Screen name="ChiTietHoaDon" component={ChiTietHoaDon} />
         </Stack.Navigator>
     );
 }

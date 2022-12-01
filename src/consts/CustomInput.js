@@ -3,7 +3,14 @@ import { Text, View, StyleSheet, TextInput } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "./color";
 
-const CustomInput = ({ error, iconName, password, ...props }) => {
+const CustomInput = ({
+    error,
+    iconName,
+    password,
+    widthInput,
+    pd,
+    ...props
+}) => {
     const [hidePassword, setHidePassword] = useState(password);
     return (
         <View>
@@ -16,7 +23,11 @@ const CustomInput = ({ error, iconName, password, ...props }) => {
                 />
                 <TextInput
                     autoCorrect={false}
-                    style={styles.input}
+                    style={[
+                        styles.input,
+                        widthInput ? { width: widthInput } : {},
+                        pd ? { padding: pd } : {},
+                    ]}
                     {...props}
                     secureTextEntry={hidePassword}
                 />

@@ -220,7 +220,7 @@ const DetailsTour = ({ navigation, route }) => {
                             fontWeight: "bold",
                         }}
                     >
-                        Thêm vào giỏ hàng
+                        Đặt vé
                     </Text>
                 </TouchableOpacity>
             </View>

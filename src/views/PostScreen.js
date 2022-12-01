@@ -33,7 +33,10 @@ const PostScreen = ({ navigation }) => {
                         Tour
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate("HotelPost")}
+                >
                     <Text style={{ fontSize: 20, fontWeight: "400" }}>
                         Khách sạn
                     </Text>

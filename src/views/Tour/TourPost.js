@@ -22,12 +22,12 @@ const TourPost = ({ navigation }) => {
     const [error, setError] = useState("");
     const [posts, setPosts] = useState({
         TieuDe: "",
-        LoaiTour: { TenLoaiTour: "" },
+        LoaiTour: "",
         MoTa: "",
         DiaDiem: "",
         ThanhPho: "",
         LichTrinh: "",
-        KhachSan: { TenKhachSan: "" },
+        KhachSan: "",
         NguoiHuongDan: "",
         SoNgay: "",
         Gia: "",
@@ -71,12 +71,12 @@ const TourPost = ({ navigation }) => {
         axiosClient
             .post("/v1/tour/add", {
                 TieuDe,
-                LoaiTour: { TenLoaiTour: LoaiTour },
+                LoaiTour: LoaiTour._id,
                 MoTa,
                 DiaDiem,
                 ThanhPho,
                 LichTrinh,
-                KhachSan: { TenKhachSan: KhachSan },
+                KhachSan: KhachSan._id,
                 NguoiHuongDan,
                 SoNgay,
                 Gia,

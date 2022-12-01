@@ -32,7 +32,7 @@ const HotelPost = ({ navigation }) => {
         // HinhAnh,
     });
 
-    const { TieuDe, MoTa, DiaChi, Email, SDT } = posts;
+    const { TenKhachSan, DiaChi, Phong, MoTa, Email, SDT } = posts;
 
     const showToast = (msg) => {
         ToastAndroid.show(msg, ToastAndroid.SHORT);
@@ -50,9 +50,13 @@ const HotelPost = ({ navigation }) => {
         }
 
         axiosClient
-            .post("/v1/tour/add", {
+            .post("/v1/khachsan", {
                 TenKhachSan,
                 DiaChi,
+                LoaiPhong: posts.Phong.LoaiPhong,
+                LoaiGiuong: posts.Phong.LoaiGiuong,
+                GiaPhong: posts.Phong.GiaPhong,
+                LoaiPhong: posts.Phong.LoaiPhong,
                 MoTa,
                 Email,
                 SDT,
@@ -107,68 +111,52 @@ const HotelPost = ({ navigation }) => {
                             </Text>
                         ) : null}
                         <CustomInput
-                            placeholder="Tiêu đề bài viết"
-                            iconName="label"
-                            value={TieuDe}
+                            placeholder="Tên Khách sạn"
+                            iconName="home-work"
+                            value={TenKhachSan}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "TieuDe")
+                                handleOnChangeText(value, "TenKhachSan")
                             }
                         />
 
                         <CustomInput
-                            placeholder="Địa điểm"
+                            placeholder="Địa chỉ"
                             iconName="place"
-                            value={DiaDiem}
+                            value={DiaChi}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "DiaDiem")
+                                handleOnChangeText(value, "DiaChi")
                             }
                         />
                         <CustomInput
-                            placeholder="Thành phố"
-                            iconName="place"
-                            value={ThanhPho}
+                            placeholder="Loại phòng"
+                            iconName="meeting-room"
+                            value={Phong.LoaiPhong}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "ThanhPho")
+                                handleOnChangeText(value, "Phong.LoaiPhong")
                             }
                         />
                         <CustomInput
-                            placeholder="Tour thiên nhiên, Tour biển, Tour gia đình, Tour tham quan,"
-                            iconName="view-list"
-                            value={LoaiTour}
+                            placeholder="Loại giường"
+                            iconName="weekend"
+                            value={Phong.LoaiGiuong}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "LoaiTour")
+                                handleOnChangeText(value, "Phong.LoaiGiuong")
                             }
                         />
                         <CustomInput
-                            placeholder="Khách sạn"
-                            iconName="home-work"
-                            value={KhachSan}
+                            placeholder="Giá phòng"
+                            iconName="euro"
+                            value={Phong.GiaPhong}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "KhachSan")
-                            }
-                        />
-                        <CustomInput
-                            placeholder="Độ dài chuyến đi"
-                            iconName="date-range"
-                            value={SoNgay}
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "SoNgay")
-                            }
-                        />
-                        <CustomInput
-                            placeholder="Người hướng dẫn"
-                            iconName="person"
-                            value={NguoiHuongDan}
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "NguoiHuongDan")
+                                handleOnChangeText(value, "Phong.GiaPhong")
                             }
                         />
                         <CustomInput
                             placeholder="Email"
                             iconName="email"
-                            value={email}
+                            value={Email}
                             onChangeText={(value) =>
-                                handleOnChangeText(value, "email")
+                                handleOnChangeText(value, "Email")
                             }
                         />
                         <CustomInput
@@ -180,16 +168,6 @@ const HotelPost = ({ navigation }) => {
                                 handleOnChangeText(value, "SDT")
                             }
                         />
-
-                        <CustomInput
-                            placeholder="Giá tour"
-                            iconName="euro"
-                            value={Gia}
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "Gia")
-                            }
-                        />
-
                         <View style={styles.action}>
                             <Icon
                                 name="source"
@@ -210,15 +188,6 @@ const HotelPost = ({ navigation }) => {
                                 />
                             </Box>
                         </View>
-                        <CustomInput
-                            placeholder="Lịch trình tour"
-                            iconName="flag"
-                            value={LichTrinh}
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "LichTrinh")
-                            }
-                        />
-
                         <CustomButton
                             text="Tải hình"
                             iconName="folder"
