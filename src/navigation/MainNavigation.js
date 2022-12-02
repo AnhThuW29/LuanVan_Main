@@ -11,13 +11,15 @@ import TourPost from "../views/Tour/TourPost";
 import TourScreen from "../views/Tour/TourScreen";
 import HotelPost from "../views/Hotel/HotelPost";
 import ChiTietHoaDon from "../views/GiaoDich/ChiTietHoaDon";
+import SignIn from "../views/SignIn";
+import SignUp from "../views/SignUp";
 
 const Stack = createNativeStackNavigator();
 
 function HomeStackScreen() {
     return (
         <Stack.Navigator
-            initialRouteName="TabScreen"
+            initialRouteName="TabNavigation"
             screenOptions={{ headerShown: false }}
         >
             <Stack.Screen name="TabNavigation" component={TabNavigation} />
@@ -29,6 +31,8 @@ function HomeStackScreen() {
             <Stack.Screen name="TourScreen" component={TourScreen} />
             <Stack.Screen name="HotelPost" component={HotelPost} />
             <Stack.Screen name="ChiTietHoaDon" component={ChiTietHoaDon} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
     );
 }
