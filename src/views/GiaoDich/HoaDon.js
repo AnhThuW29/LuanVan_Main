@@ -48,7 +48,7 @@ function HoaDon({ route, navigation }) {
         }
 
         axiosClient
-            .put("/v1/tour/update", {
+            .put("/tour/update", {
                 sl: post.post.quantity,
                 date,
                 gia,

@@ -1,8 +1,9 @@
 import axios from "axios";
+import { URL_REQUESTAXIOS } from "./urlGetDataAPI";
 
 // Cấu hình chung cho axios
 const axiosClient = axios.create({
-    baseURL: "http://192.168.88.109:9000/",
+    baseURL: URL_REQUESTAXIOS,
     headers: {
         "content-type": "application/json",
     },

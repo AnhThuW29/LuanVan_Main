@@ -50,7 +50,7 @@ const HotelPost = ({ navigation }) => {
         }
 
         axiosClient
-            .post("/v1/khachsan", {
+            .post("/khachsan", {
                 TenKhachSan,
                 DiaChi,
                 LoaiPhong: posts.Phong.LoaiPhong,
