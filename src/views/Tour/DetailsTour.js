@@ -11,6 +11,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../consts/color";
 import image from "../../assets/Bear.jpg";
+import { URL_IMAGES } from "../../api/urlGetDataAPI";
 
 const DetailsTour = ({ navigation, route }) => {
     const post = route.params;
@@ -23,7 +24,7 @@ const DetailsTour = ({ navigation, route }) => {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <ImageBackground
                     style={{ width: "100%", height: 400 }}
-                    source={image}
+                    source={{uri: URL_IMAGES + post.HinhAnh}}
                 >
                     <View style={styles.header}>
                         <Icon
@@ -45,7 +46,7 @@ const DetailsTour = ({ navigation, route }) => {
                                 marginBottom: 20,
                             }}
                         >
-                            {product.post.TieuDe}
+                            {product.TieuDe}
                         </Text>
                         <View style={{ flexDirection: "row" }}>
                             <Icon name="star" size={30} color={COLORS.orange} />
@@ -85,7 +86,7 @@ const DetailsTour = ({ navigation, route }) => {
                                     color: COLORS.primary,
                                 }}
                             >
-                                {product.post.DiaDiem}
+                                {product.DiaDiem}
                             </Text>
                         </View>
                     </View>
@@ -118,7 +119,7 @@ const DetailsTour = ({ navigation, route }) => {
                                     size={20}
                                 />
                                 <Text style={{ marginLeft: 5 }}>
-                                    Độ dài chuyến đi: {product.post.SoNgay}
+                                    Độ dài chuyến đi: {product.SoNgay}
                                 </Text>
                             </View>
                         </View>
@@ -134,7 +135,7 @@ const DetailsTour = ({ navigation, route }) => {
                                 Giới thiệu
                             </Text>
                             <Text style={{ lineHeight: 22 }}>
-                                {product.post.MoTa}
+                                {product.MoTa}
                             </Text>
                         </View>
 
@@ -149,7 +150,7 @@ const DetailsTour = ({ navigation, route }) => {
                                 Lịch trình tour
                             </Text>
                             <Text style={{ lineHeight: 22 }}>
-                                {product.post.LichTrinh}
+                                {product.LichTrinh}
                             </Text>
                         </View>
 
@@ -170,7 +171,7 @@ const DetailsTour = ({ navigation, route }) => {
                                     size={20}
                                 />
                                 <Text style={{ marginLeft: 5 }}>
-                                    Email: {product.post.email}
+                                    Email: {product.email}
                                 </Text>
                             </View>
                             <View style={styles.infoDate}>
@@ -180,7 +181,7 @@ const DetailsTour = ({ navigation, route }) => {
                                     size={20}
                                 />
                                 <Text style={{ marginLeft: 5 }}>
-                                    Số điện thoại: {product.post.SDT}
+                                    Số điện thoại: {product.SDT}
                                 </Text>
                             </View>
                         </View>
@@ -202,7 +203,7 @@ const DetailsTour = ({ navigation, route }) => {
                             color: COLORS.white,
                         }}
                     >
-                        {product.post.Gia} / Tour
+                        {product.Gia} / Tour
                     </Text>
                 </View>
                 <TouchableOpacity
