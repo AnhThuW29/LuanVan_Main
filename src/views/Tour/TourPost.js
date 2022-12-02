@@ -69,7 +69,7 @@ const TourPost = ({ navigation }) => {
         // }
 
         axiosClient
-            .post("/v1/tour/add", {
+            .post("/tour/add", {
                 TieuDe,
                 LoaiTour: LoaiTour._id,
                 MoTa,

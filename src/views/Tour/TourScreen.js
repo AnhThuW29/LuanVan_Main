@@ -29,13 +29,13 @@ const TourScreen = ({ navigation }) => {
 
     useEffect(() => {
         axiosClient
-            .get("/v1/tour/getall")
+            .get("/tour/getall")
             .then((res) => {
                 setPosts(res.data);
                 setFilter(res.data);
             })
             .catch((err) => {
-                console.log("LỖI: ", err);
+                console.log("LỖI TourScreen: ", err);
             });
     }, []);
 

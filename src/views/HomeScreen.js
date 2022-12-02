@@ -33,22 +33,22 @@ function HomeScreen({ navigation }) {
 
     useEffect(() => {
         axiosClient
-            .get("/v1/tour/getall")
+            .get("/tour/getall")
             .then((res) => {
                 setPosts(res.data);
                 setFilter(res.data);
             })
             .catch((err) => {
-                console.log("LỖI: ", err);
+                console.log("LỖI HomeScreen: ", err);
             });
         axiosClient
-            .get("/v1/khachsan/getall")
+            .get("/khachsan/getall")
             .then((res) => {
                 setHotel(res.data);
                 setFilter(res.data);
             })
             .catch((err) => {
-                console.log("LỖI: ", err);
+                console.log("LỖI HomeScreen: ", err);
             });
     }, []);
 
@@ -299,18 +299,7 @@ function HomeScreen({ navigation }) {
         );
     };
 
-    // Delete
-    // const handleDelete = (postId) => {
-    //     axiosClient
-    //         .delete(`/tour-post/${postId}`)
-    //         .then((res) => {
-    //             console.log("ok");
-    //             setPost(res.data);
-    //         })
-    //         .catch((err) => {
-    //             console.log("LOI: ", err);
-    //         });
-    // };
+    
 
     // Search
     const searchFilter = (text) => {
