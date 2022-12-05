@@ -24,6 +24,7 @@ import axiosClient from "../api/axiosClient";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInforUser } from "../redux/slice/inforUser";
 import { createHoaDon } from "../redux/slice/hoaDon";
+import { createYeuThich } from "../redux/slice/yeuThich";
 
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
@@ -94,17 +95,32 @@ const SignIn = () => {
       .get("/hoadon/getbyidkhachhang/" + idUser)
       .then((res) => {
         if (res.data.length > 1) {
-          console.log("HOADON: ", res.data);
+          // console.log("HOADON: ", res.data);
           dispatch(createHoaDon(res.data))
         } 
         if(res.data.length == 1) {
-          console.log("HOADON111: ", res.data);
+          // console.log("HOADON111: ", res.data);
           let data = [res.data]
           dispatch(createHoaDon(data))
         }
         
       })
       .catch((err) => console.log("ERR HOADON LOGIN: ", err));
+  };
+
+  const setupYeuThich = async (data) => {
+    
+        if (data.length > 1) {
+          console.log("YeuThich: ", data);
+          dispatch(createYeuThich(data))
+        } 
+        if(data.length == 1) {
+          console.log("YeuThich1: ", data);
+          // let data = [res.data]
+          dispatch(createYeuThich(data))
+        }
+        
+      
   };
 
   const onSignInPress = async () => {
@@ -138,6 +154,7 @@ const SignIn = () => {
                 dispatch(updateInforUser(inforUser));
                 console.log("LOGIN: ", inforUser.LichSu.length);
                 setupHoaDon(inforUser.id); // lay hoa don
+                setupYeuThich(res.data.YeuThich)
 
                 if (res.data.success) {
                   setUserInfo({ email: "", password: "" });

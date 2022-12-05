@@ -6,21 +6,80 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
+  StatusBar,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialIcons";
 import COLORS from "../../consts/color";
 import image from "../../assets/Bear.jpg";
 import { URL_IMAGES } from "../../api/urlGetDataAPI";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import axiosClient from "../../api/axiosClient";
+import { createYeuThich } from "../../redux/slice/yeuThich";
 
 const DetailsTour = ({ navigation, route }) => {
   const post = route.params;
+  const dispatch = useDispatch();
   const [product, setProduct] = useState(post);
+  const [like, setLike] = useState(false);
+  const listYeuThich = useSelector((s) => s.storeInforYeuThich.Tour);
+  const idUser = useSelector((s) => s.storeInforUser.id);
 
+  useEffect(() => {
+    setLike(kiemtraLike);
+  }, [listYeuThich]);
+
+  const kiemtraLike = () => {
+    let kt = false;
+    if (listYeuThich[0] != "idtour") {
+      listYeuThich.map((i) => {
+        if (i == post._id) {
+          kt = true;
+        }
+      });
+    }
+    // console.log(kt);
+    return kt;
+  };
+
+  const LikeOrUnLike = async () => {
+    await axiosClient
+      .put("/nguoidung/update/" + idUser, {
+        like: !like,
+        YeuThich: post._id,
+      })
+      .then((res) => {
+        console.log("update like or unlike");
+      })
+      .catch((err) => {
+        console.log("ERR: ", err);
+      });
+    getDataYeuThichUser();
+  };
+
+  const getDataYeuThichUser = async () => {
+    await axiosClient
+      .get("/nguoidung/getlike/" + idUser)
+      .then((res) => {
+        // if (res.data.length > 1) {
+        console.log("detail YeuThich: ", res.data);
+        dispatch(createYeuThich(res.data));
+        // }
+        // if (res.data.length == 1) {
+        // let data = [res.data]
+        // dispatch(createYeuThich(res.data));
+        // }
+      })
+      .catch((err) => {
+        console.log("ERR AXIOS: ", err);
+      });
+  };
+
+  // console.log("detail YeuThich: ", listYeuThich);
   return (
     <View style={styles.AndroidSafeArea}>
-      {/* <StatusBar translucent backgroundColor="rgba(0,0,0,0)" /> */}
-
       <ScrollView showsVerticalScrollIndicator={false}>
         <ImageBackground
           style={{ width: "100%", height: 400 }}
@@ -33,7 +92,6 @@ const DetailsTour = ({ navigation, route }) => {
               color={COLORS.white}
               onPress={navigation.goBack}
             />
-            <Icon name="more-vert" size={28} color={COLORS.white} />
           </View>
 
           <View style={styles.imageDetails}>
@@ -66,7 +124,13 @@ const DetailsTour = ({ navigation, route }) => {
         <View style={styles.detailsContainer}>
           <View style={{ flex: 0.4, bottom: 25 }}>
             <View style={styles.iconContainer}>
-              <Icon name="favorite" size={30} color={COLORS.gray} />
+              <TouchableOpacity onPress={LikeOrUnLike}>
+                {like ? (
+                  <Icon name="favorite" size={30} color={COLORS.red} />
+                ) : (
+                  <Icon name="favorite" size={30} color={COLORS.gray} />
+                )}
+              </TouchableOpacity>
             </View>
             <View style={{ flexDirection: "row", top: 10 }}>
               <Icon name="place" size={28} color={COLORS.primary} />
@@ -204,6 +268,7 @@ const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   btnBookNow: {
     height: 50,
