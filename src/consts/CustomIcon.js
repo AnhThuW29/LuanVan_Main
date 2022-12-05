@@ -17,14 +17,15 @@ export default CustomIcon;
 const styles = StyleSheet.create({
     iconContainer: {
         height: 60,
-        width: 60,
+        width: "40%",
         backgroundColor: COLORS.secondary,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
+        elevation: 10,
     },
     textIcon: {
-        fontSize: 10,
+        fontSize: 16,
         paddingTop: 5,
     },
 });

@@ -88,13 +88,16 @@ const TourPost = ({ navigation }) => {
     formData.append("email", email);
     formData.append("SDT", SDT);
 
+    var i = image.uri.lastIndexOf(".");
+    const dotImage = image.uri.slice(i);
+
     formData.append("HinhAnh", {
       uri: image.uri,
       name: Date.now() + dotImage,
       type: "image/" + dotImage,
     });
 
-    console.log("DANG BAI: ", formData);
+    console.log("DANG BAI: ", dotImage);
 
     // axiosClient
     //   .post("/v1/tour/add", formData, {

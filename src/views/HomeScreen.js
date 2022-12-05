@@ -21,6 +21,7 @@ import axiosClient from "../api/axiosClient";
 
 import image from "../assets/Bear.jpg";
 import { URL_IMAGES } from "../api/urlGetDataAPI";
+import { useSelector } from "react-redux";
 
 const { width } = Dimensions.get("screen");
 
@@ -33,21 +34,16 @@ function HomeScreen({ navigation }) {
   const [hotel, setHotel] = useState([]);
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
+  const nameKH = useSelector((s)=> s.storeInforUser.HoTen)
+  const userName =nameKH.slice(
+    nameKH.lastIndexOf(" ")
+  ); 
 
   const getDataToAPI = async () => {
     await axiosClient
       .get("/tour/getall")
       .then((res) => {
         setPosts(res.data);
-        setFilter(res.data);
-      })
-      .catch((err) => {
-        console.log("LỖI HomeScreen: ", err);
-      });
-    await axiosClient
-      .get("/khachsan/getall")
-      .then((res) => {
-        setHotel(res.data);
         setFilter(res.data);
       })
       .catch((err) => {
@@ -68,43 +64,39 @@ function HomeScreen({ navigation }) {
           text="Tour"
           onPress={() => navigation.navigate("TourScreen")}
         />
-        <CustomIcon
+        {/* <CustomIcon
           key="hotel"
           iconName="apartment"
           text="Khách sạn"
           // onPress={() => navigation.navigate("HotelScreen")}
-        />
+        /> */}
         <CustomIcon
           key="favorite"
           iconName="favorite"
           text="Yêu thích"
           onPress={() => navigation.navigate("Favorite")}
         />
-        <CustomIcon
+        {/* <CustomIcon
           key="map"
           iconName="place"
           text="Bản đồ"
           //onPress={() => navigation.navigate('Map')}
-        />
+        /> */}
       </View>
     );
   };
 
   const Card = ({ post, index }) => {
     return (
-      <View key={index} style={{ marginVertical: 5 }}>
+      <View key={post._id} style={{ marginVertical: 5 }}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() =>
-            navigation.navigate("DetailsTour", 
-              post,
-            )
-          }
+          onPress={() => navigation.navigate("DetailsTour", post)}
         >
           <ImageBackground
             style={styles.cardImage}
             // source={{ uri: post.thumbnail.url }}
-            source={{uri: URL_IMAGES + post.HinhAnh}}
+            source={{ uri: URL_IMAGES + post.HinhAnh }}
           >
             <Text
               style={{
@@ -142,33 +134,7 @@ function HomeScreen({ navigation }) {
                   width: 80,
                 }}
               >
-                {/* <Icon
-                                    name="star"
-                                    size={20}
-                                    color={COLORS.white}
-                                />
-                                <Text
-                                    style={{
-                                        marginLeft: 5,
-                                        color: COLORS.white,
-                                    }}
-                                >
-                                    5.0
-                                </Text> */}
-                {/* <Icon
-                                    name="edit"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() =>
-                                        navigation.navigate("EditTour", post)
-                                    }
-                                />
-                                <Icon
-                                    name="delete"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() => handleDelete(post._id)}
-                                /> */}
+                
               </View>
             </View>
           </ImageBackground>
@@ -189,104 +155,7 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  const CardHotel = ({ hotel, index }) => {
-    return (
-      <View key={index} style={{ marginVertical: 5 }}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          // onPress={() =>
-          //     navigation.navigate("DetailsTour", {
-          //         hotel,
-          //     })
-          // }
-        >
-          <ImageBackground
-            style={styles.cardImage}
-            // source={{ uri: post.thumbnail.url }}
-            source={{uri: URL_IMAGES + hotel.HinhAnh}}
-          >
-            <Text
-              style={{
-                color: COLORS.white,
-                fontSize: 22,
-                fontWeight: "bold",
-                marginTop: 10,
-              }}
-            >
-              {hotel.TenKhachSan}
-            </Text>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "space-between",
-                flexDirection: "row",
-                alignItems: "flex-end",
-              }}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <Icon name="place" size={20} color={COLORS.white} />
-                <Text
-                  style={{
-                    marginLeft: 5,
-                    color: COLORS.white,
-                  }}
-                >
-                  {/* {hotel.DiaChi.TinhTP} */}
-                </Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: 80,
-                }}
-              >
-                {/* <Icon
-                                    name="star"
-                                    size={20}
-                                    color={COLORS.white}
-                                />
-                                <Text
-                                    style={{
-                                        marginLeft: 5,
-                                        color: COLORS.white,
-                                    }}
-                                >
-                                    5.0
-                                </Text> */}
-                {/* <Icon
-                                    name="edit"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() =>
-                                        navigation.navigate("EditTour", post)
-                                    }
-                                />
-                                <Icon
-                                    name="delete"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() => handleDelete(post._id)}
-                                /> */}
-              </View>
-            </View>
-          </ImageBackground>
-          <View style={styles.details}>
-            <Text
-              style={[styles.textDetails, styles.tourName]}
-              ellipsizeMode="tail"
-              numberOfLines={1}
-            >
-              {hotel.TenKhachSan}
-            </Text>
-            <Text style={[styles.textDetails, { color: COLORS.orange }]}>
-              {/* {hotel.Phong.GiaPhong} */}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  
 
   // Search
   const searchFilter = (text) => {
@@ -319,11 +188,11 @@ function HomeScreen({ navigation }) {
     <View style={styles.AndroidSafeArea}>
       {/* <StatusBar translucent={false} backgroundColor={COLORS.white} /> */}
       <View style={styles.header}>
-        <Icon name="sort" size={28} color={COLORS.white} />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />
+        <Text style={styles.headerTitle}>Xin chào,{userName}</Text>
       </View>
 
       <ScrollView
+        key={"ScrollView1"}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -355,23 +224,33 @@ function HomeScreen({ navigation }) {
         <Text style={styles.sectionTitle}>Địa điểm yêu thích</Text>
 
         <View>
-          <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={posts}
-            // renderItem={({ item }) => <Card place={item} />}
-            renderItem={({ item }) => {
-              return <Card post={item} />;
-            }}
-            keyExtractor={(post) => {
-              post._id;
-            }}
-          />
+          <ScrollView scrollEnabled={false} horizontal key={"ScrollView2"}>
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
+              horizontal={false}
+              showsHorizontalScrollIndicator={false}
+              data={filter}
+              // renderItem={({ item }) => <Card place={item} />}
+              renderItem={({ item }) => {
+                return <Card post={item} />;
+              }}
+              // keyExtractor={(post) => {
+              //   post._id;
+              // }}
+              keyExtractor={(item) => `${item._id}`}
+            />
+          </ScrollView>
         </View>
+      </ScrollView>
+    </View>
+  );
+}
 
-        <Text style={styles.sectionTitle}>Khách sạn</Text>
-        <View>
+export default HomeScreen;
+
+{
+  /* <Text style={styles.sectionTitle}>Khách sạn</Text>
+         <View>
           <FlatList
             contentContainerStyle={{ paddingLeft: 20 }}
             horizontal
@@ -385,13 +264,8 @@ function HomeScreen({ navigation }) {
               hotel._id;
             }}
           />
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </View> */
 }
-
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   AndroidSafeArea: {
@@ -426,12 +300,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    elevation: 3,
   },
   categoryContainer: {
     marginTop: 40,
     marginHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   sectionTitle: {
     marginHorizontal: 20,

@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
-    Text,
-    View,
-    SafeAreaView,
-    Image,
-    StyleSheet,
-    ScrollView,
+  Text,
+  View,
+  SafeAreaView,
+  Image,
+  StyleSheet,
+  ScrollView,
+  Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
@@ -15,182 +16,267 @@ import CustomButton from "../consts/CustomButton";
 import CustomInput from "../consts/CustomInput";
 // import SignUpScreen from "../screens/SignUpScreen";
 import {
-    isValidEmail,
-    isValidObjectField,
-    updateError,
+  isValidEmail,
+  isValidObjectField,
+  updateError,
 } from "../utils/methods";
 import axiosClient from "../api/axiosClient";
+import { useDispatch, useSelector } from "react-redux";
+import { updateInforUser } from "../redux/slice/inforUser";
+import { createHoaDon } from "../redux/slice/hoaDon";
 
 const SignIn = () => {
-    const [userInfo, setUserInfo] = useState({
-        email: "",
-        password: "",
-    });
+  const [userInfo, setUserInfo] = useState({
+    email: "nam@gmail.com",
+    password: "123456",
+  });
+  const dispatch = useDispatch();
+  const hhhhhhh = useSelector((s) => s.storeInforUser);
+  const inforUser = {
+    stateLogin: false,
+    id: "id",
+    HoTen: "",
+    NgaySinh: "",
+    SDT: "",
+    DiaChi: [
+      {
+        TinhTP: "",
+        QuanHuyen: "",
+        XaPhuong: "",
+        ChiTiet: "",
+      },
+    ],
+    Email: "ykgk",
+    YeuThich: {
+      Tour: [""],
+      KhachSan: [""],
+    },
+    LichSu: {
+      LSTour: [
+        {
+          Tour: "",
+          TrangThai: "x",
+        },
+      ],
+      LSKhachSan: [
+        {
+          KhachSan: "",
+          TrangThai: "x",
+        },
+      ],
+    },
+    Quyen: "",
+  };
 
-    const { email, password } = userInfo;
+  const { email, password } = userInfo;
 
-    const [error, setError] = useState("");
+  const [error, setError] = useState("");
 
-    const handleOnChangeText = (value, fieldName) => {
-        setUserInfo({ ...userInfo, [fieldName]: value });
-    };
+  const handleOnChangeText = (value, fieldName) => {
+    setUserInfo({ ...userInfo, [fieldName]: value });
+  };
 
-    const isValidForm = () => {
-        if (!isValidObjectField(userInfo))
-            return updateError("Điền vào ô trống", setError);
+  const isValidForm = () => {
+    if (!isValidObjectField(userInfo))
+      return updateError("Điền vào ô trống", setError);
 
-        if (!isValidEmail(email))
-            return updateError("Email không đúng", setError);
+    if (!isValidEmail(email)) return updateError("Email không đúng", setError);
 
-        // nữa nhớ check lại đk
-        if (!password.trim() || password.length < 8)
-            return updateError("Mật khẩu không đúng", setError);
+    // nữa nhớ check lại đk
+    // if (!password.trim() || password.length < 8)
+    //   return updateError("Mật khẩu không đúng", setError);
 
-        return true;
-    };
+    return true;
+  };
 
-    const onSignInPress = async () => {
-        if (isValidForm()) {
-            try {
-                const res = await axiosClient.post("/v1/nguoidung/dangnhap", {
-                    ...userInfo,
-                });
+  const setupHoaDon = async (idUser) => {
+    await axiosClient
+      .get("/hoadon/getbyidkhachhang/" + idUser)
+      .then((res) => {
+        if (res.data.length > 1) {
+          console.log("HOADON: ", res.data);
+          dispatch(createHoaDon(res.data))
+        } 
+        if(res.data.length == 1) {
+          console.log("HOADON111: ", res.data);
+          let data = [res.data]
+          dispatch(createHoaDon(data))
+        }
+        
+      })
+      .catch((err) => console.log("ERR HOADON LOGIN: ", err));
+  };
+
+  const onSignInPress = async () => {
+    if (isValidForm()) {
+      try {
+        const user = {
+          Email: "long@gmail.com",
+          // Email: "duong@gmail.com",
+          MatKhau: "abc123456",
+        };
+        await axiosClient
+          .post("/nguoidung/dangnhap", user)
+          .then((res) => {
+            // console.log("SingIn: ", res.data);
+            if (res.data.stateLogin == "NoUser") {
+              Alert.alert("Không tìm thấy người dùng");
+            } else {
+              if (res.data.stateLogin == "NoPassword") {
+                Alert.alert("Sai mật khẩu");
+              } else {
+                inforUser.stateLogin = true;
+                inforUser.id = res.data.id;
+                inforUser.HoTen = res.data.HoTen;
+                inforUser.NgaySinh = res.data.NgaySinh;
+                inforUser.SDT = res.data.SDT;
+                inforUser.DiaChi = res.data.DiaChi;
+                inforUser.Email = res.data.Email;
+                inforUser.YeuThich = res.data.YeuThich;
+                inforUser.LichSu = res.data.LichSu;
+                inforUser.Quyen = res.data.Quyen;
+                dispatch(updateInforUser(inforUser));
+                console.log("LOGIN: ", inforUser.LichSu.length);
+                setupHoaDon(inforUser.id); // lay hoa don
 
                 if (res.data.success) {
-                    setUserInfo({ email: "", password: "" });
-                    // setIsLoggedIn(true);
+                  setUserInfo({ email: "", password: "" });
                 }
-            } catch (err) {
-                console.log("Error: ", err.message);
+              }
             }
-        }
-        // setIsLoggedIn(true);
-    };
+          })
+          .catch((err) => {
+            console.log("ERR AXIOS: ", err);
+          });
+      } catch (err) {
+        console.log("Error SignIn: ", err);
+      }
+    }
+    // setIsLoggedIn(true);
+  };
 
-    const onForgotPassword = () => {
-        console.log("Quên mật khẩu");
-    };
+  const onForgotPassword = () => {
+    console.log("Quên mật khẩu");
+  };
 
-    const onSignInFB = () => {
-        console.log("Facebook");
-    };
+  const onSignInFB = () => {
+    inforUser.stateLogin = false;
+    inforUser.userID = "id";
+    inforUser.userName = "Name";
 
-    const onSignInEmail = () => {
-        console.log("Email");
-    };
+    dispatch(updateInforUser(inforUser));
+    console.log("LOGIN: ", hhhhhhh);
+    // console.log("Facebook");
+  };
 
-    const navigation = useNavigation();
-    const onSignUp = () => {
-        navigation.navigate("SignUpScreen");
-    };
+  const onSignInEmail = () => {
+    console.log("Email");
+  };
 
-    return (
-        <SafeAreaView>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={styles.container}>
-                    <View style={styles.header}>
-                        <Text
-                            style={{
-                                fontSize: 20,
-                                fontWeight: "bold",
-                            }}
-                        >
-                            Đăng nhập
-                        </Text>
-                        <Image
-                            source={Logo}
-                            style={styles.logo}
-                            resizeMode={"contain"}
-                        />
-                    </View>
+  const navigation = useNavigation();
+  const onSignUp = () => {
+    // navigation.navigate("SignUpScreen");
+  };
 
-                    {error ? (
-                        <Text
-                            style={{
-                                color: "red",
-                                fontSize: 18,
-                                textAlign: "center",
-                            }}
-                        >
-                            {error}
-                        </Text>
-                    ) : null}
-                    <View>
-                        <CustomInput
-                            placeholder="Email"
-                            iconName="account-circle"
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "email")
-                            }
-                            autoCapitalize="none"
-                            value={email}
-                            // error={error.email}
-                        />
-                        <CustomInput
-                            placeholder="Mật khẩu"
-                            iconName="lock"
-                            onChangeText={(value) =>
-                                handleOnChangeText(value, "password")
-                            }
-                            password
-                            value={password}
-                            // error={error.password}
-                        />
-                    </View>
+  return (
+    <SafeAreaView>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Đăng nhập
+            </Text>
+            <Image source={Logo} style={styles.logo} resizeMode={"contain"} />
+          </View>
 
-                    <View style={{ alignItems: "center" }}>
-                        <CustomButton
-                            text="Đăng nhập"
-                            onPress={onSignInPress}
-                            type="Primary"
-                            widthBtn="50%"
-                        />
-                    </View>
-                    <CustomButton
-                        text="Quên mật khẩu?"
-                        onPress={onForgotPassword}
-                        type="Secondary"
-                    />
-                    <CustomButton
-                        text="Đăng nhập với Facebook"
-                        onPress={onSignInFB}
-                        bgColor="#e5efff"
-                        textColor="#4765A9"
-                        type="Primary"
-                    />
-                    <CustomButton
-                        text="Đăng nhập với Email"
-                        onPress={onSignInEmail}
-                        bgColor="#FAE9EA"
-                        textColor="#DD4D44"
-                        type="Primary"
-                    />
-                    <CustomButton
-                        text="Bạn chưa có tài khoản?"
-                        onPress={onSignUp}
-                        type="Secondary"
-                    />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
-    );
+          {error ? (
+            <Text
+              style={{
+                color: "red",
+                fontSize: 18,
+                textAlign: "center",
+              }}
+            >
+              {error}
+            </Text>
+          ) : null}
+          <View>
+            <CustomInput
+              placeholder="SDT"
+              iconName="account-circle"
+              onChangeText={(value) => handleOnChangeText(value, "email")}
+              autoCapitalize="none"
+              value={email}
+              // error={error.email}
+            />
+            <CustomInput
+              placeholder="Mật khẩu"
+              iconName="lock"
+              onChangeText={(value) => handleOnChangeText(value, "password")}
+              password
+              value={password}
+              // error={error.password}
+            />
+          </View>
+
+          <View style={{ alignItems: "center" }}>
+            <CustomButton
+              text="Đăng nhập"
+              onPress={onSignInPress}
+              type="Primary"
+              widthBtn="50%"
+            />
+          </View>
+          <CustomButton
+            text="Quên mật khẩu?"
+            onPress={onForgotPassword}
+            type="Secondary"
+          />
+          <CustomButton
+            text="Đăng nhập với Facebook"
+            onPress={onSignInFB}
+            bgColor="#e5efff"
+            textColor="#4765A9"
+            type="Primary"
+          />
+          <CustomButton
+            text="Đăng nhập với Email"
+            onPress={onSignInEmail}
+            bgColor="#FAE9EA"
+            textColor="#DD4D44"
+            type="Primary"
+          />
+          <CustomButton
+            text="Bạn chưa có tài khoản?"
+            onPress={onSignUp}
+            type="Secondary"
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
 };
 
 export default SignIn;
 
 const styles = StyleSheet.create({
-    container: {
-        // alignItems: 'center',
-        padding: 20,
-        marginVertical: 50,
-    },
-    header: {
-        alignItems: "center",
-    },
-    logo: {
-        width: "70%",
-        maxWidth: 300,
-        height: 150,
-        marginVertical: 20,
-    },
+  container: {
+    // alignItems: 'center',
+    padding: 20,
+    marginVertical: 50,
+  },
+  header: {
+    alignItems: "center",
+  },
+  logo: {
+    width: "70%",
+    maxWidth: 300,
+    height: 150,
+    marginVertical: 20,
+  },
 });
