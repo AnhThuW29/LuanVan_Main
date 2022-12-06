@@ -13,6 +13,7 @@ import {
   Dimensions,
   StatusBar,
   Platform,
+  Pressable,
 } from "react-native";
 import COLORS from "../consts/color";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -34,10 +35,8 @@ function HomeScreen({ navigation }) {
   const [hotel, setHotel] = useState([]);
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
-  const nameKH = useSelector((s)=> s.storeInforUser.HoTen)
-  const userName =nameKH.slice(
-    nameKH.lastIndexOf(" ")
-  ); 
+  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const userName = nameKH.slice(nameKH.lastIndexOf(" "));
 
   const getDataToAPI = async () => {
     await axiosClient
@@ -51,31 +50,95 @@ function HomeScreen({ navigation }) {
       });
   };
 
+  const [selected, setSelected] = useState(0);
+
+  const handleClick = (id) => {
+    setSelected(id);
+  };
+
   useEffect(() => {
     getDataToAPI();
   }, []);
 
+  const tourCategories = [
+    {
+      id: 1,
+      name: "Tour thiên nhiên",
+    },
+    {
+      id: 2,
+      name: "Tour biển",
+    },
+    {
+      id: 3,
+      name: "Tour tham quan - văn hóa",
+    },
+    {
+      id: 4,
+      name: "Tour gia đình",
+    },
+    {
+      id: 5,
+      name: "Tour sinh thái",
+    },
+    {
+      id: 6,
+      name: "Tour nghĩ dưỡng",
+    },
+  ];
+
+  // Chọn theo loại
+  const TourTopicList = ({ item }) => {
+    return (
+      <View key={item.id} style={styles.categorySelecter}>
+        <Pressable activeOpacity={0.8} onPress={() => handleClick(item.id)}>
+          {/* onPress={() => handleClick(item.id)} */}
+          <View
+            style={{
+              ...styles.tourList,
+              backgroundColor:
+                selected === item.id ? COLORS.orange : COLORS.primary,
+            }}
+          >
+            <Text>{item.name}</Text>
+          </View>
+        </Pressable>
+      </View>
+    );
+  };
+
   const ListCategories = (name) => {
     return (
       <View key={name} style={styles.categoryContainer}>
-        <CustomIcon
+        <View>
+          <FlatList
+            // snapToAlignment={50}
+            contentContainerStyle={{ paddingLeft: 20 }}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={tourCategories}
+            renderItem={({ item }) => <TourTopicList item={item} />}
+            keyExtractor={(item) => item.key}
+          />
+        </View>
+        {/* <CustomIcon
           key="tour"
           iconName="beach-access"
           text="Tour"
           onPress={() => navigation.navigate("TourScreen")}
-        />
+        /> */}
         {/* <CustomIcon
           key="hotel"
           iconName="apartment"
           text="Khách sạn"
           // onPress={() => navigation.navigate("HotelScreen")}
         /> */}
-        <CustomIcon
+        {/* <CustomIcon
           key="favorite"
           iconName="favorite"
           text="Yêu thích"
           onPress={() => navigation.navigate("Favorite")}
-        />
+        /> */}
         {/* <CustomIcon
           key="map"
           iconName="place"
@@ -133,9 +196,7 @@ function HomeScreen({ navigation }) {
                   justifyContent: "space-around",
                   width: 80,
                 }}
-              >
-                
-              </View>
+              ></View>
             </View>
           </ImageBackground>
           <View style={styles.details}>
@@ -154,8 +215,6 @@ function HomeScreen({ navigation }) {
       </View>
     );
   };
-
-  
 
   // Search
   const searchFilter = (text) => {
@@ -219,10 +278,28 @@ function HomeScreen({ navigation }) {
           </View>
         </View>
 
+        <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
+        <View>
+          <FlatList
+            contentContainerStyle={{ paddingLeft: 20 }}
+            horizontal={true}
+            showsHorizontalScrollIndicator={true}
+            data={filter}
+            // renderItem={({ item }) => <Card place={item} />}
+            renderItem={({ item }) => {
+              return <Card post={item} />;
+            }}
+            // keyExtractor={(post) => {
+            //   post._id;
+            // }}
+            keyExtractor={(item) => `${item._id}`}
+          />
+        </View>
+
+        <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
+
         <ListCategories />
-
-        <Text style={styles.sectionTitle}>Địa điểm yêu thích</Text>
-
+        
         <View>
           <ScrollView scrollEnabled={false} horizontal key={"ScrollView2"}>
             <FlatList
@@ -302,6 +379,18 @@ const styles = StyleSheet.create({
     shadowRadius: 5,
     elevation: 3,
   },
+  categorySelecter: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  tourList: {
+    height: 40,
+    backgroundColor: COLORS.primary,
+    padding: 10,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+
   categoryContainer: {
     marginTop: 40,
     marginHorizontal: 20,
@@ -311,6 +400,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginHorizontal: 20,
     marginVertical: 20,
+    
+    paddingTop: 20,
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  sectionTitle2: {
+    // marginHorizontal: 20,
+    // marginVertical: 20,
+    
+    // paddingTop: 20,
     fontWeight: "bold",
     fontSize: 20,
   },

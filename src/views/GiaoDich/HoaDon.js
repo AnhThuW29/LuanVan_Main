@@ -23,34 +23,65 @@ import axiosClient from "../../api/axiosClient";
 import { useToast } from "native-base";
 import { useDispatch, useSelector } from "react-redux";
 import { createHoaDon, updateHoaDon } from "../../redux/slice/hoaDon";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 function HoaDon({ route, navigation }) {
   const { post } = route.params;
-  //   const [product, setProduct] = useState();
-  //   const [date, setDate] = useState("");
-  const [infoKhachHang, setInfoKhachHang] = useState({});
   const dataKhachHang = useSelector((s) => s.storeInforUser);
-
-  const nameKH = dataKhachHang.HoTen.slice(
-    dataKhachHang.HoTen.lastIndexOf(" ")
-  );
   const dataStoreHoaDon = useSelector((s) => s.storeInforHoaDon);
   const dispatch = useDispatch();
 
+  const d = new Date();
+  const nameKH = dataKhachHang.HoTen.slice(
+    dataKhachHang.HoTen.lastIndexOf(" ")
+  );
+
+  const [date, setDate] = useState();
+  const [infoKhachHang, setInfoKhachHang] = useState({});
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [hoaDonUser, setHoaDonUser] = useState({
     MaHoaDon: "TuDong",
     IDKhachHang: dataKhachHang.id,
     IDTour: post._id,
-    NgayKhoiHanh: "12",
+    NgayKhoiHanh: date,
     SoLuongKhach: 1,
     TongTien: post.Gia,
   });
 
   useEffect(() => {
     setInfoKhachHang(dataKhachHang);
-    // console.log("HOADON: ", dataStoreHoaDon.HD);
+
+    const t = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    setDate(t);
   }, [dataKhachHang, dataStoreHoaDon]);
 
+  // SETUP NGAY KHOI HANH ----------------
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (dateClick) => {
+    const dd = dateClick.getDate();
+    const mm = dateClick.getMonth();
+    const yy = dateClick.getFullYear();
+
+    const t = new Date(yy, mm, dd + 1);
+    if (t < d) {
+      Alert.alert("Ngày khởi hành của bạn không hợp lệ!");
+    } else {
+      const dateDone = dd + "-" + (mm + 1) + "-" + yy;
+      setDate(dateDone);
+      setHoaDonUser({ ...hoaDonUser, NgayKhoiHanh: dateDone });
+    }
+
+    hideDatePicker();
+  };
+
+  // SETUP SO LUONG-------------------------------------
   const handleDecrease = () => {
     if (hoaDonUser.SoLuongKhach > 1) {
       let t = hoaDonUser.SoLuongKhach - 1;
@@ -64,11 +95,13 @@ function HoaDon({ route, navigation }) {
     setHoaDonUser({ ...hoaDonUser, SoLuongKhach: t, TongTien: g });
   };
 
+  //
   const toast = useToast;
   const showToast = (msg) => {
     toast.show({ description: msg });
   };
 
+  // SETUP HOA DON-----------------------------------
   const setupHoaDon = async (idUser) => {
     await axiosClient
       .get("/hoadon/getbyidkhachhang/" + idUser)
@@ -86,13 +119,9 @@ function HoaDon({ route, navigation }) {
       .catch((err) => console.log("ERR HOADON LOGIN: ", err));
   };
 
+  // SUBMIT ---------------------------------
   const payment = async () => {
-    // if (!date) {
-    //     toast.show({ description: "Bạn cần nhập ngày đi!" });
-    //     return;
-    // }
     const hd = [hoaDonUser];
-    // console.log(hd);
 
     await axiosClient
       .post("/hoadon/add", hoaDonUser)
@@ -104,11 +133,11 @@ function HoaDon({ route, navigation }) {
         console.log(err);
       });
 
-    
-      Alert.alert("Bạn đã đặt vé thành công!");
-      
+    Alert.alert("Bạn đã đặt vé thành công!");
+    // navigation.navigate("DetailsTour");
   };
 
+  ///------------------------
   return (
     <View style={styles.AndroidSafeArea}>
       <View style={styles.header}>
@@ -157,14 +186,24 @@ function HoaDon({ route, navigation }) {
             <Text style={styles.infoItemTitle}>Chọn ngày:</Text>
           </View>
           <View style={styles.infoItemRightWrapper}>
-            <CustomInput
-              placeholder="01/01/2022"
-              widthInput="60%"
-              value={hoaDonUser.NgayKhoiHanh || ""}
-              onChangeText={(text) =>
-                setHoaDonUser({ ...hoaDonUser, NgayKhoiHanh: text })
-              }
-            />
+            <TouchableOpacity onPress={showDatePicker}>
+              {/* <CustomInput
+                placeholder="01/01/2022"
+                widthInput="60%"
+                value={hoaDonUser.NgayKhoiHanh || ""}
+                onChangeText={(text) =>
+                  setHoaDonUser({ ...hoaDonUser, NgayKhoiHanh: text })
+                }
+              /> */}
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                onCancel={hideDatePicker}
+              />
+              {/* <Text>{d.getDate()}</Text> */}
+              <Text>{date}</Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.infoWrapper}>
@@ -279,7 +318,10 @@ function HoaDon({ route, navigation }) {
           // onPress={() =>
           //     navigation.navigate("ChiTietHoaDon", { post })
           // }
-          onPress={payment}
+          onPress={() => {
+            payment();
+            
+          }}
         >
           <Text
             style={{

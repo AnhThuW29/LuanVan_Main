@@ -26,66 +26,81 @@ const Favorite = ({ navigation }) => {
   console.log("dataTourFavorite: ", dataTourFavorite);
 
   useEffect(() => {
-    axiosClient.post("/tour/getbylist", listFavorite).then((res) => {
-      setDataTourFavorite(res.data);
-    });
+    axiosClient
+      .post("/tour/getbylist", listFavorite)
+      .then((res) => {
+        if (res.data.length > 0) setDataTourFavorite(res.data);
+        else setDataTourFavorite([]);
+      })
+      .catch((err) => {
+        console.log("ERR favorite: ", err);
+      });
   }, [listFavorite]);
 
-  const RenderFavorites = ({ navigation }) => {
-    return (
-      <View>
-        <ScrollView>
-          <View style={{ paddingRight: 10 }}>
-            {listFavorite &&
-              listFavorite.map((items) => (
-                <TouchableOpacity
-                  key={items._id}
-                  // onPress={() => navigation.navigate("ChiTietHoaDon")}
-                >
-                  <View style={styles.info}>
-                    <Image
-                      style={styles.cardImage}
-                      source={{
-                        uri: URL_IMAGES + items.HinhAnh || "",
-                      }}
-                    />
-                    <View
-                      style={{
-                        paddingRight: 10,
-                        marginRight: 10,
-                        width: "60%",
-                      }}
-                    >
-                      <Text
-                        style={{ fontSize: 18, fontWeight: "bold" }}
-                        numberOfLines={3}
-                        ellipsizeMode="tail"
+  const RenderFavorites = () => {
+    if (dataTourFavorite.length == 0)
+      return (
+        <View style={styles.headerTitle}>
+          <Text style={styles.noFavoriteTitle}>
+            Bạn chưa yêu thích chuyến đi nào!
+          </Text>
+          <Text style={styles.noFavoriteTitle}>Hãy khám phá thêm nhé.</Text>
+        </View>
+      );
+    else
+      return (
+        <View>
+          <ScrollView>
+            <View style={{ paddingRight: 10 }}>
+              {dataTourFavorite &&
+                dataTourFavorite.map((items) => (
+                  <TouchableOpacity
+                    key={items._id}
+                    onPress={() => navigation.navigate("DetailsTour", items)}
+                  >
+                    <View style={styles.info}>
+                      <Image
+                        style={styles.cardImage}
+                        source={{
+                          uri: URL_IMAGES + items.HinhAnh || "",
+                        }}
+                      />
+                      <View
+                        style={{
+                          paddingRight: 10,
+                          marginRight: 10,
+                          width: "60%",
+                        }}
                       >
-                        {items.TieuDe}
-                      </Text>
-                      <Text>Ngày đi: {items.NgayKhoiHanh}</Text>
-                      <Text>Số lượng hành khách: {items.SoLuongKhach}</Text>
+                        <Text
+                          style={{ fontSize: 18, fontWeight: "bold" }}
+                          numberOfLines={3}
+                          ellipsizeMode="tail"
+                        >
+                          {items.TieuDe}
+                        </Text>
+                        <Text>Độ dài chuyến đi: {items.SoNgay}</Text>
+                        {/* <Text>Số lượng hành khách: {items.SoLuongKhach}</Text> */}
+                      </View>
                     </View>
-                  </View>
-                  <View style={styles.infoPrice}>
-                    <Icon
-                      name="monetization-on"
-                      style={{ fontSize: 18, marginRight: 5 }}
-                    />
-                    <Text>Tổng thanh toán: </Text>
-                    <Text>{items.TongTien}</Text>
-                  </View>
-                </TouchableOpacity>
-              ))}
-          </View>
+                    <View style={styles.infoPrice}>
+                      <Icon
+                        name="monetization-on"
+                        style={{ fontSize: 18, marginRight: 5 }}
+                      />
+                      {/* <Text>Tổng thanh toán: </Text> */}
+                      <Text>{items.Gia}</Text>
+                    </View>
+                  </TouchableOpacity>
+                ))}
+            </View>
 
-          {/* <View>
-            <Text>loi</Text>
-            {console.log("LOI: 176: ", dataStoreHoaDon.HD)}
-          </View> */}
-        </ScrollView>
-      </View>
-    );
+            {/* <View>
+              <Text>loi</Text>
+            </View> */}
+          </ScrollView>
+        </View>
+      );
   };
 
   return (
@@ -115,6 +130,17 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+  },
+  headerTitle: {
+    marginTop: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+  },
+  noFavoriteTitle: {
+    color: COLORS.orange,
+    fontWeight: "bold",
+    fontSize: 23,
   },
   header: {
     flexDirection: "row",
