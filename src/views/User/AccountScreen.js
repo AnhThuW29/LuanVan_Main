@@ -118,24 +118,24 @@ const AccountScreen = ({ navigation }) => {
             </View>
           </View>
           <View style={styles.menuWrapper}>
-            <TouchableRipple onPress={() => {}}>
+            <TouchableRipple onPress={() => navigation.navigate("Favorite")}>
               <View style={styles.menuItem}>
                 <Icon name="favorite" color="#FF6347" size={25} />
                 <Text style={styles.menuItemText}>Your Favorites</Text>
               </View>
             </TouchableRipple>
-            <TouchableRipple onPress={() => {}}>
+            <TouchableRipple onPress={() => navigation.navigate("ChangePassword")}>
               <View style={styles.menuItem}>
                 <Icon name="credit-card" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Payment</Text>
+                <Text style={styles.menuItemText}>Đổi mật khẩu</Text>
               </View>
             </TouchableRipple>
-            <TouchableRipple onPress={() => {}}>
+            {/* <TouchableRipple onPress={() => {}}>
               <View style={styles.menuItem}>
                 <Icon name="support-agent" color="#FF6347" size={25} />
                 <Text style={styles.menuItemText}>Support</Text>
               </View>
-            </TouchableRipple>
+            </TouchableRipple> */}
             <TouchableRipple
               onPress={() => {
                 const resetUser = {

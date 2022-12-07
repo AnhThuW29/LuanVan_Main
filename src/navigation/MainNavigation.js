@@ -15,6 +15,7 @@ import SignIn from "../views/SignIn";
 import SignUp from "../views/SignUp";
 import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
+import ChangePassword from "../views/User/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +36,8 @@ const HomeStackScreen = () => {
       <Stack.Screen name="ChiTietHoaDon" component={ChiTietHoaDon} />
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
+
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
       {/* {console.log("LOGGGGGG HomeStackScreen : HomeStackScreen")} */}
     </Stack.Navigator>
   );

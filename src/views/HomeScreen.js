@@ -23,6 +23,8 @@ import axiosClient from "../api/axiosClient";
 import image from "../assets/Bear.jpg";
 import { URL_IMAGES } from "../api/urlGetDataAPI";
 import { useSelector } from "react-redux";
+import CustomButton from "../consts/CustomButton";
+import { Button } from "native-base";
 
 const { width } = Dimensions.get("screen");
 
@@ -36,7 +38,20 @@ function HomeScreen({ navigation }) {
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
   const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const [dataTourFavorite, setDataTourFavorite] = useState([]);
+  const listFavorite = useSelector((s) => s.storeInforYeuThich.Tour);
   const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+
+  const [selected, setSelected] = useState(0);
+
+  const handleClick = (id) => {
+    setSelected(id);
+  };
+
+  useEffect(() => {
+    getDataToAPI();
+    getListFavorite();
+  }, [listFavorite]);
 
   const getDataToAPI = async () => {
     await axiosClient
@@ -50,15 +65,17 @@ function HomeScreen({ navigation }) {
       });
   };
 
-  const [selected, setSelected] = useState(0);
-
-  const handleClick = (id) => {
-    setSelected(id);
+  const getListFavorite = () => {
+    axiosClient
+      .post("/tour/getbylist", listFavorite)
+      .then((res) => {
+        if (res.data.length > 0) setDataTourFavorite(res.data);
+        else setDataTourFavorite([]);
+      })
+      .catch((err) => {
+        console.log("ERR favorite: ", err);
+      });
   };
-
-  useEffect(() => {
-    getDataToAPI();
-  }, []);
 
   const tourCategories = [
     {
@@ -216,6 +233,73 @@ function HomeScreen({ navigation }) {
     );
   };
 
+  const RenderSelecter = ({ post, index }) => {
+    return (
+      <View key={post._id} style={{ marginVertical: 5 }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => navigation.navigate("DetailsTour", post)}
+        >
+          <ImageBackground
+            style={styles.cardImage}
+            // source={{ uri: post.thumbnail.url }}
+            source={{ uri: URL_IMAGES + post.HinhAnh }}
+          >
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 22,
+                fontWeight: "bold",
+                marginTop: 10,
+              }}
+            >
+              {post.DiaDiem}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "flex-end",
+              }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Icon name="place" size={20} color={COLORS.white} />
+                <Text
+                  style={{
+                    marginLeft: 5,
+                    color: COLORS.white,
+                  }}
+                >
+                  {post.ThanhPho}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-around",
+                  width: 80,
+                }}
+              ></View>
+            </View>
+          </ImageBackground>
+          <View style={styles.details}>
+            <Text
+              style={[styles.textDetails, styles.tourName]}
+              ellipsizeMode="tail"
+              numberOfLines={1}
+            >
+              {post.TieuDe}
+            </Text>
+            <Text style={[styles.textDetails, { color: COLORS.orange }]}>
+              {post.Gia}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   // Search
   const searchFilter = (text) => {
     if (text) {
@@ -278,28 +362,39 @@ function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
-        <View>
-          <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal={true}
-            showsHorizontalScrollIndicator={true}
-            data={filter}
-            // renderItem={({ item }) => <Card place={item} />}
-            renderItem={({ item }) => {
-              return <Card post={item} />;
-            }}
-            // keyExtractor={(post) => {
-            //   post._id;
-            // }}
-            keyExtractor={(item) => `${item._id}`}
-          />
-        </View>
+        {dataTourFavorite.length > 0 && (
+          <View>
+            <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              data={dataTourFavorite}
+              // renderItem={({ item }) => <Card place={item} />}
+              renderItem={({ item }) => {
+                return <RenderSelecter post={item} />;
+              }}
+              // keyExtractor={(post) => {
+              //   post._id;
+              // }}
+              keyExtractor={(item) => `${item._id}`}
+            />
+
+            <View style={{ alignItems: "center" }}>
+              <CustomButton
+                text="Xem thêm"
+                type="Primary"
+                widthBtn="50%"
+                onPress={() => navigation.navigate("Favorite")}
+              />
+            </View>
+          </View>
+        )}
 
         <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
 
-        <ListCategories />
-        
+        {/* <ListCategories /> */}
+
         <View>
           <ScrollView scrollEnabled={false} horizontal key={"ScrollView2"}>
             <FlatList
@@ -307,13 +402,9 @@ function HomeScreen({ navigation }) {
               horizontal={false}
               showsHorizontalScrollIndicator={false}
               data={filter}
-              // renderItem={({ item }) => <Card place={item} />}
               renderItem={({ item }) => {
                 return <Card post={item} />;
               }}
-              // keyExtractor={(post) => {
-              //   post._id;
-              // }}
               keyExtractor={(item) => `${item._id}`}
             />
           </ScrollView>
@@ -400,16 +491,16 @@ const styles = StyleSheet.create({
   sectionTitle: {
     marginHorizontal: 20,
     marginVertical: 20,
-    
+
     paddingTop: 20,
     fontWeight: "bold",
     fontSize: 20,
   },
   sectionTitle2: {
-    // marginHorizontal: 20,
-    // marginVertical: 20,
-    
-    // paddingTop: 20,
+    marginHorizontal: 20,
+    marginVertical: 20,
+
+    paddingTop: 20,
     fontWeight: "bold",
     fontSize: 20,
   },

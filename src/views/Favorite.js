@@ -113,9 +113,9 @@ const Favorite = ({ navigation }) => {
           onPress={navigation.goBack}
         />
         <Text style={{ fontSize: 18, fontWeight: "500" }}>
-          Đơn hàng của tôi
+          Danh sách yêu thích
         </Text>
-        <Icon name="notifications" size={28} color={COLORS.white} />
+        {/* <Icon name="notifications" size={28} color={COLORS.white} /> */}
       </View>
 
       <RenderFavorites />
