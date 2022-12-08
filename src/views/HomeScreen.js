@@ -433,22 +433,22 @@ function HomeScreen({ navigation }) {
                 {/* <ListCategories /> */}
 
                 <View>
-                    <ScrollView
+                    {/* <ScrollView
                         scrollEnabled={false}
                         horizontal
                         key={"ScrollView2"}
-                    >
-                        <FlatList
-                            contentContainerStyle={{ paddingLeft: 20 }}
-                            horizontal={false}
-                            showsHorizontalScrollIndicator={false}
-                            data={filter}
-                            renderItem={({ item }) => {
-                                return <Card post={item} />;
-                            }}
-                            keyExtractor={(item) => `${item._id}`}
-                        />
-                    </ScrollView>
+                    > */}
+                    <FlatList
+                        contentContainerStyle={{ paddingLeft: 20 }}
+                        horizontal={false}
+                        showsHorizontalScrollIndicator={false}
+                        data={filter}
+                        renderItem={({ item }) => {
+                            return <Card post={item} />;
+                        }}
+                        keyExtractor={(item) => `${item._id}`}
+                    />
+                    {/* </ScrollView> */}
                 </View>
             </ScrollView>
         </View>

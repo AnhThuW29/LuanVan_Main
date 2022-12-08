@@ -14,8 +14,9 @@ const PostScreen = ({ navigation }) => {
                     color={COLORS.white}
                     onPress={navigation.goBack}
                 />
-                <Text>Xin chào, Anh Thư</Text>
-                <Icon name="notifications" size={28} color={COLORS.white} />
+                <Text style={{ fontSize: 18, paddingLeft: 55 }}>
+                    Xin chào, Anh Thư
+                </Text>
             </View>
 
             <View
@@ -33,14 +34,14 @@ const PostScreen = ({ navigation }) => {
                         Tour
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={styles.button}
                     onPress={() => navigation.navigate("HotelPost")}
                 >
                     <Text style={{ fontSize: 20, fontWeight: "400" }}>
                         Khách sạn
                     </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         </View>
     );
@@ -57,7 +58,6 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
         paddingHorizontal: 20,
         backgroundColor: COLORS.primary,
         height: 80,
