@@ -1,5 +1,5 @@
 // IP MAY
-const ip = "192.168.43.104";
+const ip = "192.168.88.112";
 
 const portServer = "9000";
 
