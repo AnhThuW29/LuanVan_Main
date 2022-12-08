@@ -96,45 +96,40 @@ const SignIn = () => {
       .then((res) => {
         if (res.data.length > 1) {
           // console.log("HOADON: ", res.data);
-          dispatch(createHoaDon(res.data))
-        } 
-        if(res.data.length == 1) {
-          // console.log("HOADON111: ", res.data);
-          let data = [res.data]
-          dispatch(createHoaDon(data))
+          dispatch(createHoaDon(res.data));
         }
-        
+        if (res.data.length == 1) {
+          // console.log("HOADON111: ", res.data);
+          let data = [res.data];
+          dispatch(createHoaDon(data));
+        }
       })
       .catch((err) => console.log("ERR HOADON LOGIN: ", err));
   };
 
   const setupYeuThich = async (data) => {
-    
-        if (data.length > 1) {
-          console.log("YeuThich: ", data);
-          dispatch(createYeuThich(data))
-        } 
-        if(data.length == 1) {
-          console.log("YeuThich1: ", data);
-          // let data = [res.data]
-          dispatch(createYeuThich(data))
-        }
-        
-      
+    if (data.length > 1) {
+      console.log("YeuThich: ", data);
+      dispatch(createYeuThich(data));
+    }
+    if (data.length == 1) {
+      console.log("YeuThich1: ", data);
+      // let data = [res.data]
+      dispatch(createYeuThich(data));
+    }
   };
 
   const onSignInPress = async () => {
     if (isValidForm()) {
       try {
         const user = {
-          Email: "long@gmail.com",
+          Email: email,
           // Email: "duong@gmail.com",
-          MatKhau: "abc123456",
+          MatKhau: password,
         };
         await axiosClient
           .post("/nguoidung/dangnhap", user)
           .then((res) => {
-            // console.log("SingIn: ", res.data);
             if (res.data.stateLogin == "NoUser") {
               Alert.alert("Không tìm thấy người dùng");
             } else {
@@ -154,7 +149,7 @@ const SignIn = () => {
                 dispatch(updateInforUser(inforUser));
                 console.log("LOGIN: ", inforUser.LichSu.length);
                 setupHoaDon(inforUser.id); // lay hoa don
-                setupYeuThich(res.data.YeuThich)
+                setupYeuThich(res.data.YeuThich);
 
                 if (res.data.success) {
                   setUserInfo({ email: "", password: "" });
@@ -192,7 +187,7 @@ const SignIn = () => {
 
   const navigation = useNavigation();
   const onSignUp = () => {
-    // navigation.navigate("SignUpScreen");
+    navigation.navigate("SignUp");
   };
 
   return (
@@ -224,7 +219,7 @@ const SignIn = () => {
           ) : null}
           <View>
             <CustomInput
-              placeholder="SDT"
+              placeholder="Email"
               iconName="account-circle"
               onChangeText={(value) => handleOnChangeText(value, "email")}
               autoCapitalize="none"
@@ -249,25 +244,26 @@ const SignIn = () => {
               widthBtn="50%"
             />
           </View>
+
           <CustomButton
             text="Quên mật khẩu?"
             onPress={onForgotPassword}
             type="Secondary"
           />
-          <CustomButton
+          {/* <CustomButton
             text="Đăng nhập với Facebook"
             onPress={onSignInFB}
             bgColor="#e5efff"
             textColor="#4765A9"
             type="Primary"
-          />
-          <CustomButton
+          /> */}
+          {/* <CustomButton
             text="Đăng nhập với Email"
             onPress={onSignInEmail}
             bgColor="#FAE9EA"
             textColor="#DD4D44"
             type="Primary"
-          />
+          /> */}
           <CustomButton
             text="Bạn chưa có tài khoản?"
             onPress={onSignUp}

@@ -112,7 +112,7 @@ const SignUp = () => {
 
   const navigation = useNavigation();
   const onSignIn = () => {
-    navigation.navigate("SignInScreen");
+    navigation.navigate("SignIn");
   };
 
   const dangKyNguoiMua = () => {
