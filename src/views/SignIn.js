@@ -39,6 +39,7 @@ const SignIn = () => {
     HoTen: "",
     NgaySinh: "",
     SDT: "",
+    GioiTinh: "",
     DiaChi: [
       {
         TinhTP: "",
@@ -48,6 +49,7 @@ const SignIn = () => {
       },
     ],
     Email: "ykgk",
+    CMND: "",
     YeuThich: {
       Tour: [""],
       KhachSan: [""],
@@ -123,9 +125,11 @@ const SignIn = () => {
     if (isValidForm()) {
       try {
         const user = {
-          Email: email,
-          // Email: "duong@gmail.com",
-          MatKhau: password,
+          // Email: email,
+          // MatKhau: password,
+
+          Email: "long@gmail.com",
+          MatKhau: "abc123456",
         };
         await axiosClient
           .post("/nguoidung/dangnhap", user)
@@ -142,6 +146,8 @@ const SignIn = () => {
                 inforUser.NgaySinh = res.data.NgaySinh;
                 inforUser.SDT = res.data.SDT;
                 inforUser.DiaChi = res.data.DiaChi;
+                inforUser.GioiTinh = res.data.GioiTinh;
+                inforUser.CMND = res.data.CMND;
                 inforUser.Email = res.data.Email;
                 inforUser.YeuThich = res.data.YeuThich;
                 inforUser.LichSu = res.data.LichSu;
@@ -150,7 +156,7 @@ const SignIn = () => {
                 console.log("LOGIN: ", inforUser.LichSu.length);
                 setupHoaDon(inforUser.id); // lay hoa don
                 setupYeuThich(res.data.YeuThich);
-
+                console.log(">>>>>>: ", res.data);
                 if (res.data.success) {
                   setUserInfo({ email: "", password: "" });
                 }

@@ -9,6 +9,7 @@ import AccountScreen from "../views/User/AccountScreen";
 import LichSu from "../views/GiaoDich/LichSu";
 import ThongKe from "../views/GiaoDich/ThongKe";
 import { useSelector } from "react-redux";
+import TourPost from "../views/Tour/TourPost";
 
 const Tab = createBottomTabNavigator();
 
@@ -165,7 +166,7 @@ const TabNavigation = () => {
                 />
                 <Tab.Screen
                     name="Đăng bài"
-                    component={PostScreen}
+                    component={TourPost}
                     options={{
                         tabBarIcon: ({ color, size }) => {
                             return (

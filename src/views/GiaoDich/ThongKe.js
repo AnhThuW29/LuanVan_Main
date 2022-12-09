@@ -44,6 +44,7 @@ function ThongKe({ navigation }) {
             <ScrollView>
                 <View style={styles.sectionDoanhthu}>
                     <View style={styles.Tien}>
+
                         <View
                             style={{
                                 height: "31%",
@@ -52,12 +53,13 @@ function ThongKe({ navigation }) {
                                 alignItems: "center",
                             }}
                         >
+
                             <Icon
                                 name="monetization-on"
-                                color={COLORS.orange}
-                                size="30"
-                                style={{ paddingLeft: 10, paddingTop: 5 }}
+                                color={COLORS.orange}                                
+                                style={{ paddingLeft: 10, paddingTop: 5, fontSize: 30 }}
                             />
+
                             <Text
                                 style={{
                                     paddingTop: 5,
@@ -69,6 +71,7 @@ function ThongKe({ navigation }) {
                                 Lợi nhuận
                             </Text>
                         </View>
+
                         <View
                             style={{
                                 height: "69%",
@@ -79,6 +82,7 @@ function ThongKe({ navigation }) {
                         >
                             <Text
                                 style={{ color: COLORS.orange, fontSize: 30 }}
+
                             >
                                 1.500
                             </Text>

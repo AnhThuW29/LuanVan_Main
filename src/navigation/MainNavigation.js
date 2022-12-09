@@ -50,7 +50,7 @@ const HomeStackScreen = () => {
 const SignInUp = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SignUp"
+      initialRouteName="SignIn"
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="SignIn" component={SignIn} />
@@ -59,6 +59,7 @@ const SignInUp = () => {
     </Stack.Navigator>
   );
 };
+
 
 const MainNavigation = () => {
     const [isLogin, setIsLogin] = useState(false);
