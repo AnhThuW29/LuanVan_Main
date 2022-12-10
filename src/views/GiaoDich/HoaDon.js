@@ -313,6 +313,7 @@ function HoaDon({ route, navigation }) {
             {hoaDonUser.TongTien} VND
           </Text>
         </View>
+
         <TouchableOpacity
           style={styles.btnBookNow}
           // onPress={() =>

@@ -128,7 +128,7 @@ const SignIn = () => {
           // Email: email,
           // MatKhau: password,
 
-          Email: "long@gmail.com",
+          Email: "duong@gmail.com",
           MatKhau: "abc123456",
         };
         await axiosClient
