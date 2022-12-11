@@ -89,18 +89,19 @@ const DetailsTour = ({ navigation, route }) => {
       },
       {
         text: "OK",
-        onPress: () => {
-        //   axiosClient.delete("/tour/delete/" + post._id).then((res) => {
-        //     Alert.alert("Thông báo", "Xóa tour thành công", [
-        //       {
-        //         text: "OK",
-        //         onPress: () => {
-        //           navigation.navigate("TabNavigation");
-        //         },
-        //       },
-        //     ]);
-        //   });
-        console.log(post._id);
+        onPress: async () => {
+         await axiosClient.delete("/tour/delete/" + post._id).then((res) => {
+            Alert.alert("Thông báo", "Xóa tour thành công", [
+              {
+                text: "OK",
+                onPress: () => {
+                  console.log(post._id);
+
+                  navigation.navigate("TabNavigation");
+                },
+              },
+            ]);
+          });
         },
       },
     ]);
