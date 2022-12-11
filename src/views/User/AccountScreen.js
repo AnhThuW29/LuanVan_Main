@@ -16,6 +16,7 @@ import COLORS from "../../consts/color";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInforUser } from "../../redux/slice/inforUser";
+import axiosClient from "../../api/axiosClient";
 
 const imgWidth = Dimensions.get("screen").width * 0.33333;
 
@@ -46,11 +47,26 @@ const AccountScreen = ({ navigation }) => {
     Quyen: "1",
   });
   const dataStoreUser = useSelector((s) => s.storeInforUser);
+  const d = new Date();
+  const dateNow =
+    d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+  const [dataThongKe, setDataThongKe] = useState({});
 
   useEffect(() => {
     setInforUser(dataStoreUser);
     console.log("LOG account: ", inforUser);
+    getDataThongKe();
   }, [dataStoreUser]);
+
+  const getDataThongKe = async () => {
+    await axiosClient
+      .post("/thongke/thongkeallchutour/" + dataStoreUser.id, { Ngay: dateNow })
+      .then((res) => {
+        console.log(res.data);
+        setDataThongKe(res.data)
+      })
+      .catch((err) => console.log("ERR AccountScreen: ", err));
+  };
 
   return (
     <View style={styles.AndroidSafeArea}>
@@ -110,6 +126,7 @@ const AccountScreen = ({ navigation }) => {
               </Text>
             </View>
           </View>
+
           <View style={styles.infoBoxWrapper}>
             <View
               style={[
@@ -120,14 +137,22 @@ const AccountScreen = ({ navigation }) => {
                 },
               ]}
             >
-              <Title>150.000</Title>
-              <Caption>Ví</Caption>
+              <Title>{dataStoreUser.Quyen == "MUA" ? "1m" : dataThongKe.TongDoanhThu}</Title>
+              <Caption>
+                {dataStoreUser.Quyen == "MUA" ? "Ví" : "Doanh thu"}
+              </Caption>
             </View>
             <View style={styles.infoBox}>
-              <Title>{inforUser.LichSu.length}</Title>
-              <Caption>Đơn hàng</Caption>
+              <Title>
+                {}{" "}
+                {dataStoreUser.Quyen == "MUA" ? inforUser.LichSu.length : dataThongKe.SoLuongBaiDang}
+              </Title>
+              <Caption>
+                {dataStoreUser.Quyen == "MUA" ? "Đơn hàng" : "Bài đăng"}
+              </Caption>
             </View>
           </View>
+
           <View style={styles.menuWrapper}>
             {dataStoreUser.Quyen == "MUA" ? (
               <TouchableRipple onPress={() => navigation.navigate("Favorite")}>

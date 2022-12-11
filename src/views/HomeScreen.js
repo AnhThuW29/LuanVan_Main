@@ -37,12 +37,15 @@ function HomeScreen({ navigation }) {
   const [hotel, setHotel] = useState([]);
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
-  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  
+  
   const [dataTourFavorite, setDataTourFavorite] = useState([]);
   const listFavorite = useSelector((s) => s.storeInforYeuThich.Tour);
+  
+  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
   const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+  console.log(userName);
   const dataKhachHang = useSelector((s) => s.storeInforUser);
-
 
   const [selected, setSelected] = useState(0);
 
@@ -126,47 +129,24 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  const ListCategories = (name) => {
-    return (
-      <View key={name} style={styles.categoryContainer}>
-        <View>
-          <FlatList
-            // snapToAlignment={50}
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={tourCategories}
-            renderItem={({ item }) => <TourTopicList item={item} />}
-            keyExtractor={(item) => item.key}
-          />
-        </View>
-        {/* <CustomIcon
-          key="tour"
-          iconName="beach-access"
-          text="Tour"
-          onPress={() => navigation.navigate("TourScreen")}
-        /> */}
-        {/* <CustomIcon
-          key="hotel"
-          iconName="apartment"
-          text="Khách sạn"
-          // onPress={() => navigation.navigate("HotelScreen")}
-        /> */}
-        {/* <CustomIcon
-          key="favorite"
-          iconName="favorite"
-          text="Yêu thích"
-          onPress={() => navigation.navigate("Favorite")}
-        /> */}
-        {/* <CustomIcon
-          key="map"
-          iconName="place"
-          text="Bản đồ"
-          //onPress={() => navigation.navigate('Map')}
-        /> */}
-      </View>
-    );
-  };
+  // const ListCategories = (name) => {
+  //   return (
+  //     <View key={name} style={styles.categoryContainer}>
+  //       <View>
+  //         <FlatList
+  //           // snapToAlignment={50}
+  //           contentContainerStyle={{ paddingLeft: 20 }}
+  //           horizontal
+  //           showsHorizontalScrollIndicator={false}
+  //           data={tourCategories}
+  //           renderItem={({ item }) => <TourTopicList item={item} />}
+  //           keyExtractor={(item) => item.key}
+  //         />
+  //       </View>
+
+  //     </View>
+  //   );
+  // };
 
   const Card = ({ post, index }) => {
     return (
@@ -339,7 +319,7 @@ function HomeScreen({ navigation }) {
             fontSize: 20,
           }}
         >
-          Xin chào,{userName}
+          Xin chào, {userName}
         </Text>
       </View>
 
@@ -371,7 +351,7 @@ function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {(dataTourFavorite.length > 0 && dataKhachHang.Quyen == "MUA") && (
+        {/* {(dataTourFavorite.length > 0 && dataKhachHang.Quyen == "MUA") && (
           <View>
             <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
             <FlatList
@@ -398,30 +378,31 @@ function HomeScreen({ navigation }) {
               />
             </View>
           </View>
-        )}
+        )} */}
 
         <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
 
         {/* <ListCategories /> */}
-
-        <View>
-          {/* <ScrollView
+        <ScrollView horizontal={true} scrollEnabled={false}>
+          <View>
+            {/* <ScrollView
                         scrollEnabled={false}
                         horizontal
                         key={"ScrollView2"}
                     > */}
-          <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal={false}
-            showsHorizontalScrollIndicator={false}
-            data={filter}
-            renderItem={({ item }) => {
-              return <Card post={item} />;
-            }}
-            keyExtractor={(item) => `${item._id}`}
-          />
-          {/* </ScrollView> */}
-        </View>
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
+              horizontal={false}
+              showsHorizontalScrollIndicator={false}
+              data={filter}
+              renderItem={({ item }) => {
+                return <Card post={item} />;
+              }}
+              keyExtractor={(item) => `${item._id}`}
+            />
+            {/* </ScrollView> */}
+          </View>
+        </ScrollView>
       </ScrollView>
     </View>
   );

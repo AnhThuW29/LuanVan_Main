@@ -38,6 +38,7 @@ const HomeStackScreen = () => {
             <Stack.Screen name="ChiTietHoaDon" component={ChiTietHoaDon} />
             <Stack.Screen name="EditAccount" component={EditAccount} />
             <Stack.Screen name="EditTour" component={EditTour} />
+            
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="SignUp" component={SignUp} />
 

@@ -25,6 +25,7 @@ import COLORS from "../../consts/color";
 import CustomInput from "../../consts/CustomInput";
 import CustomButton from "../../consts/CustomButton";
 import axiosClient from "../../api/axiosClient";
+import { useSelector } from "react-redux";
 
 const TourPost = ({ navigation }) => {
   const [image, setImage] = useState(null);
@@ -44,6 +45,9 @@ const TourPost = ({ navigation }) => {
     SDT: "",
     quantity: "",
   });
+  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+  console.log(userName);
 
   const {
     TieuDe,
@@ -135,7 +139,7 @@ const TourPost = ({ navigation }) => {
             onPress={navigation.goBack}
           />
           <Text style={{ fontSize: 18, paddingLeft: 55 }}>
-            Xin chào, Anh Thư
+            Xin chào, {userName}
           </Text>
         </View>
         <ScrollView>

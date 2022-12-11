@@ -5,6 +5,11 @@ import COLORS from "../consts/color";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
 const PostScreen = ({ navigation }) => {
+
+    const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+  console.log(userName);
+
     return (
         <View style={styles.AndroidSafeArea}>
             <View style={styles.header}>
@@ -15,7 +20,7 @@ const PostScreen = ({ navigation }) => {
                     onPress={navigation.goBack}
                 />
                 <Text style={{ fontSize: 18, paddingLeft: 55 }}>
-                    Xin chào, Anh Thư
+                    Xin chào, {userName}
                 </Text>
             </View>
 
