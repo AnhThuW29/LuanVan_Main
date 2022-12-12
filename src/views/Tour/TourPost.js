@@ -9,7 +9,14 @@ import {
   // Alert,
   // PermissionsAndroid,
 } from "react-native";
-import { NativeBaseProvider, Box, TextArea, useToast } from "native-base";
+import {
+  NativeBaseProvider,
+  Box,
+  TextArea,
+  useToast,
+  Select,
+  CheckIcon,
+} from "native-base";
 import * as ImagePicker from "expo-image-picker";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -18,6 +25,7 @@ import COLORS from "../../consts/color";
 import CustomInput from "../../consts/CustomInput";
 import CustomButton from "../../consts/CustomButton";
 import axiosClient from "../../api/axiosClient";
+import { useSelector } from "react-redux";
 
 const TourPost = ({ navigation }) => {
   const [image, setImage] = useState(null);
@@ -30,7 +38,6 @@ const TourPost = ({ navigation }) => {
     DiaDiem: "",
     ThanhPho: "",
     LichTrinh: "",
-    KhachSan: "",
     NguoiHuongDan: "",
     SoNgay: "",
     Gia: "",
@@ -38,6 +45,9 @@ const TourPost = ({ navigation }) => {
     SDT: "",
     quantity: "",
   });
+  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+  console.log(userName);
 
   const {
     TieuDe,
@@ -46,7 +56,6 @@ const TourPost = ({ navigation }) => {
     DiaDiem,
     ThanhPho,
     LichTrinh,
-    KhachSan,
     NguoiHuongDan,
     SoNgay,
     Gia,
@@ -88,13 +97,16 @@ const TourPost = ({ navigation }) => {
     formData.append("email", email);
     formData.append("SDT", SDT);
 
+    var i = image.uri.lastIndexOf(".");
+    const dotImage = image.uri.slice(i);
+
     formData.append("HinhAnh", {
       uri: image.uri,
       name: Date.now() + dotImage,
       type: "image/" + dotImage,
     });
 
-    console.log("DANG BAI: ", formData);
+    console.log("DANG BAI: ", dotImage);
 
     // axiosClient
     //   .post("/v1/tour/add", formData, {
@@ -115,6 +127,7 @@ const TourPost = ({ navigation }) => {
     setPosts({ ...posts, [field]: value });
   };
 
+
   return (
     <NativeBaseProvider>
       <View style={styles.AndroidSafeArea}>
@@ -125,8 +138,9 @@ const TourPost = ({ navigation }) => {
             color={COLORS.white}
             onPress={navigation.goBack}
           />
-          <Text>Xin chào, Anh Thư</Text>
-          <Icon name="notifications-none" size={24} color={COLORS.white} />
+          <Text style={{ fontSize: 18, paddingLeft: 55 }}>
+            Xin chào, {userName}
+          </Text>
         </View>
         <ScrollView>
           {/* <StatusBar
@@ -171,12 +185,30 @@ const TourPost = ({ navigation }) => {
               value={LoaiTour}
               onChangeText={(value) => handleOnChangeText(value, "LoaiTour")}
             />
-            <CustomInput
-              placeholder="Khách sạn"
-              iconName="home-work"
-              value={KhachSan}
-              onChangeText={(value) => handleOnChangeText(value, "KhachSan")}
-            />
+
+            <View>
+              {/* <Select
+                selectedValue={"position"}
+                // mx={{
+                //   base: 0,
+                //   md: "auto",
+                // }}
+                onValueChange={(nextValue) => {
+                  console.log(nextValue);
+                }}
+                // _selectedItem={{
+                //   bg: "cyan.600",
+                //   endIcon: <CheckIcon size={4} />,
+                // }}
+              >
+                <Select.Item label="Duy Tan" value={"Duy Tan"}></Select.Item>
+                <Select.Item label="Duy Nam" value={"Duy Nam"}></Select.Item>
+                <Select.Item label="Duy Duy" value={"Duy Duy"}></Select.Item>
+              </Select> */}
+            </View>
+
+
+
             <CustomInput
               placeholder="Độ dài chuyến đi"
               iconName="date-range"
@@ -280,15 +312,13 @@ const styles = StyleSheet.create({
   AndroidSafeArea: {
     flex: 1,
     backgroundColor: "white",
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
   },
   header: {
     paddingVertical: 20,
     paddingHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
     backgroundColor: COLORS.primary,
-    // height: 80,
   },
   commandButton: {
     padding: 15,

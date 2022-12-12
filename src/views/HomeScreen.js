@@ -13,6 +13,7 @@ import {
   Dimensions,
   StatusBar,
   Platform,
+  Pressable,
 } from "react-native";
 import COLORS from "../consts/color";
 import Icon from "react-native-vector-icons/MaterialIcons";
@@ -21,6 +22,9 @@ import axiosClient from "../api/axiosClient";
 
 import image from "../assets/Bear.jpg";
 import { URL_IMAGES } from "../api/urlGetDataAPI";
+import { useSelector } from "react-redux";
+import CustomButton from "../consts/CustomButton";
+import { Button } from "native-base";
 
 const { width } = Dimensions.get("screen");
 
@@ -33,6 +37,26 @@ function HomeScreen({ navigation }) {
   const [hotel, setHotel] = useState([]);
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
+  
+  
+  const [dataTourFavorite, setDataTourFavorite] = useState([]);
+  const listFavorite = useSelector((s) => s.storeInforYeuThich.Tour);
+  
+  const nameKH = useSelector((s) => s.storeInforUser.HoTen);
+  const userName = nameKH.slice(nameKH.lastIndexOf(" "));
+  console.log(userName);
+  const dataKhachHang = useSelector((s) => s.storeInforUser);
+
+  const [selected, setSelected] = useState(0);
+
+  const handleClick = (id) => {
+    setSelected(id);
+  };
+
+  useEffect(() => {
+    getDataToAPI();
+    getListFavorite();
+  }, [listFavorite]);
 
   const getDataToAPI = async () => {
     await axiosClient
@@ -44,67 +68,97 @@ function HomeScreen({ navigation }) {
       .catch((err) => {
         console.log("LỖI HomeScreen: ", err);
       });
-    await axiosClient
-      .get("/khachsan/getall")
+  };
+
+  const getListFavorite = () => {
+    axiosClient
+      .post("/tour/getbylist", listFavorite)
       .then((res) => {
-        setHotel(res.data);
-        setFilter(res.data);
+        if (res.data.length > 0) setDataTourFavorite(res.data);
+        else setDataTourFavorite([]);
       })
       .catch((err) => {
-        console.log("LỖI HomeScreen: ", err);
+        console.log("ERR favorite: ", err);
       });
   };
 
-  useEffect(() => {
-    getDataToAPI();
-  }, []);
+  const tourCategories = [
+    {
+      id: 1,
+      name: "Tour thiên nhiên",
+    },
+    {
+      id: 2,
+      name: "Tour biển",
+    },
+    {
+      id: 3,
+      name: "Tour tham quan - văn hóa",
+    },
+    {
+      id: 4,
+      name: "Tour gia đình",
+    },
+    {
+      id: 5,
+      name: "Tour sinh thái",
+    },
+    {
+      id: 6,
+      name: "Tour nghĩ dưỡng",
+    },
+  ];
 
-  const ListCategories = (name) => {
+  // Chọn theo loại
+  const TourTopicList = ({ item }) => {
     return (
-      <View key={name} style={styles.categoryContainer}>
-        <CustomIcon
-          key="tour"
-          iconName="beach-access"
-          text="Tour"
-          onPress={() => navigation.navigate("TourScreen")}
-        />
-        <CustomIcon
-          key="hotel"
-          iconName="apartment"
-          text="Khách sạn"
-          // onPress={() => navigation.navigate("HotelScreen")}
-        />
-        <CustomIcon
-          key="favorite"
-          iconName="favorite"
-          text="Yêu thích"
-          onPress={() => navigation.navigate("Favorite")}
-        />
-        <CustomIcon
-          key="map"
-          iconName="place"
-          text="Bản đồ"
-          //onPress={() => navigation.navigate('Map')}
-        />
+      <View key={item.id} style={styles.categorySelecter}>
+        <Pressable activeOpacity={0.8} onPress={() => handleClick(item.id)}>
+          {/* onPress={() => handleClick(item.id)} */}
+          <View
+            style={{
+              ...styles.tourList,
+              backgroundColor:
+                selected === item.id ? COLORS.orange : COLORS.primary,
+            }}
+          >
+            <Text>{item.name}</Text>
+          </View>
+        </Pressable>
       </View>
     );
   };
 
+  // const ListCategories = (name) => {
+  //   return (
+  //     <View key={name} style={styles.categoryContainer}>
+  //       <View>
+  //         <FlatList
+  //           // snapToAlignment={50}
+  //           contentContainerStyle={{ paddingLeft: 20 }}
+  //           horizontal
+  //           showsHorizontalScrollIndicator={false}
+  //           data={tourCategories}
+  //           renderItem={({ item }) => <TourTopicList item={item} />}
+  //           keyExtractor={(item) => item.key}
+  //         />
+  //       </View>
+
+  //     </View>
+  //   );
+  // };
+
   const Card = ({ post, index }) => {
     return (
-      <View key={index} style={{ marginVertical: 5 }}>
+      <View key={post._id} style={{ marginVertical: 5 }}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() =>
-            navigation.navigate("DetailsTour", 
-              post,
-            )
-          }
+          onPress={() => navigation.navigate("DetailsTour", post)}
         >
           <ImageBackground
             style={styles.cardImage}
             // source={{ uri: post.thumbnail.url }}
-            source={{uri: URL_IMAGES + post.HinhAnh}}
+            source={{ uri: URL_IMAGES + post.HinhAnh }}
           >
             <Text
               style={{
@@ -141,35 +195,7 @@ function HomeScreen({ navigation }) {
                   justifyContent: "space-around",
                   width: 80,
                 }}
-              >
-                {/* <Icon
-                                    name="star"
-                                    size={20}
-                                    color={COLORS.white}
-                                />
-                                <Text
-                                    style={{
-                                        marginLeft: 5,
-                                        color: COLORS.white,
-                                    }}
-                                >
-                                    5.0
-                                </Text> */}
-                {/* <Icon
-                                    name="edit"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() =>
-                                        navigation.navigate("EditTour", post)
-                                    }
-                                />
-                                <Icon
-                                    name="delete"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() => handleDelete(post._id)}
-                                /> */}
-              </View>
+              ></View>
             </View>
           </ImageBackground>
           <View style={styles.details}>
@@ -189,21 +215,17 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  const CardHotel = ({ hotel, index }) => {
+  const RenderSelecter = ({ post, index }) => {
     return (
-      <View key={index} style={{ marginVertical: 5 }}>
+      <View key={post._id} style={{ marginVertical: 5 }}>
         <TouchableOpacity
           activeOpacity={0.8}
-          // onPress={() =>
-          //     navigation.navigate("DetailsTour", {
-          //         hotel,
-          //     })
-          // }
+          onPress={() => navigation.navigate("DetailsTour", post)}
         >
           <ImageBackground
             style={styles.cardImage}
             // source={{ uri: post.thumbnail.url }}
-            source={{uri: URL_IMAGES + hotel.HinhAnh}}
+            source={{ uri: URL_IMAGES + post.HinhAnh }}
           >
             <Text
               style={{
@@ -213,7 +235,7 @@ function HomeScreen({ navigation }) {
                 marginTop: 10,
               }}
             >
-              {hotel.TenKhachSan}
+              {post.DiaDiem}
             </Text>
             <View
               style={{
@@ -231,7 +253,7 @@ function HomeScreen({ navigation }) {
                     color: COLORS.white,
                   }}
                 >
-                  {/* {hotel.DiaChi.TinhTP} */}
+                  {post.ThanhPho}
                 </Text>
               </View>
               <View
@@ -240,35 +262,7 @@ function HomeScreen({ navigation }) {
                   justifyContent: "space-around",
                   width: 80,
                 }}
-              >
-                {/* <Icon
-                                    name="star"
-                                    size={20}
-                                    color={COLORS.white}
-                                />
-                                <Text
-                                    style={{
-                                        marginLeft: 5,
-                                        color: COLORS.white,
-                                    }}
-                                >
-                                    5.0
-                                </Text> */}
-                {/* <Icon
-                                    name="edit"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() =>
-                                        navigation.navigate("EditTour", post)
-                                    }
-                                />
-                                <Icon
-                                    name="delete"
-                                    size={28}
-                                    color={COLORS.white}
-                                    onPress={() => handleDelete(post._id)}
-                                /> */}
-              </View>
+              ></View>
             </View>
           </ImageBackground>
           <View style={styles.details}>
@@ -277,10 +271,10 @@ function HomeScreen({ navigation }) {
               ellipsizeMode="tail"
               numberOfLines={1}
             >
-              {hotel.TenKhachSan}
+              {post.TieuDe}
             </Text>
             <Text style={[styles.textDetails, { color: COLORS.orange }]}>
-              {/* {hotel.Phong.GiaPhong} */}
+              {post.Gia}
             </Text>
           </View>
         </TouchableOpacity>
@@ -319,11 +313,18 @@ function HomeScreen({ navigation }) {
     <View style={styles.AndroidSafeArea}>
       {/* <StatusBar translucent={false} backgroundColor={COLORS.white} /> */}
       <View style={styles.header}>
-        <Icon name="sort" size={28} color={COLORS.white} />
-        <Icon name="notifications-none" size={28} color={COLORS.white} />
+        <Text
+          style={{
+            color: COLORS.white,
+            fontSize: 20,
+          }}
+        >
+          Xin chào, {userName}
+        </Text>
       </View>
 
       <ScrollView
+        key={"ScrollView1"}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -350,28 +351,68 @@ function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        <ListCategories />
+        {(dataTourFavorite.length > 0 && dataKhachHang.Quyen == "MUA") && (
+          <View>
+            <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
+              horizontal={true}
+              showsHorizontalScrollIndicator={true}
+              data={dataTourFavorite}
+              // renderItem={({ item }) => <Card place={item} />}
+              renderItem={({ item }) => {
+                return <RenderSelecter post={item} />;
+              }}
+              // keyExtractor={(post) => {
+              //   post._id;
+              // }}
+              keyExtractor={(item) => `${item._id}`}
+            />
 
-        <Text style={styles.sectionTitle}>Địa điểm yêu thích</Text>
+            <View style={{ alignItems: "center" }}>
+              <CustomButton
+                text="Xem thêm"
+                type="Secondary"
+                widthBtn="50%"
+                onPress={() => navigation.navigate("Favorite")}
+              />
+            </View>
+          </View>
+        )}
 
-        <View>
-          <FlatList
-            contentContainerStyle={{ paddingLeft: 20 }}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={posts}
-            // renderItem={({ item }) => <Card place={item} />}
-            renderItem={({ item }) => {
-              return <Card post={item} />;
-            }}
-            keyExtractor={(post) => {
-              post._id;
-            }}
-          />
-        </View>
+        <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
 
-        <Text style={styles.sectionTitle}>Khách sạn</Text>
-        <View>
+        {/* <ListCategories /> */}
+        <ScrollView horizontal={true} scrollEnabled={false}>
+          <View>
+            {/* <ScrollView
+                        scrollEnabled={false}
+                        horizontal
+                        key={"ScrollView2"}
+                    > */}
+            <FlatList
+              contentContainerStyle={{ paddingLeft: 20 }}
+              horizontal={false}
+              showsHorizontalScrollIndicator={false}
+              data={filter}
+              renderItem={({ item }) => {
+                return <Card post={item} />;
+              }}
+              keyExtractor={(item) => `${item._id}`}
+            />
+            {/* </ScrollView> */}
+          </View>
+        </ScrollView>
+      </ScrollView>
+    </View>
+  );
+}
+
+export default HomeScreen;
+
+{
+  /* <Text style={styles.sectionTitle}>Khách sạn</Text>
+         <View>
           <FlatList
             contentContainerStyle={{ paddingLeft: 20 }}
             horizontal
@@ -385,13 +426,8 @@ function HomeScreen({ navigation }) {
               hotel._id;
             }}
           />
-        </View>
-      </ScrollView>
-    </View>
-  );
+        </View> */
 }
-
-export default HomeScreen;
 
 const styles = StyleSheet.create({
   AndroidSafeArea: {
@@ -403,12 +439,12 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     paddingHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     backgroundColor: COLORS.primary,
   },
   headerTitle: {
     color: COLORS.white,
-    fontWeight: "bold",
+    fontWeight: "600",
     fontSize: 23,
   },
 
@@ -426,16 +462,38 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
+    elevation: 3,
   },
+  categorySelecter: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+  },
+  tourList: {
+    height: 40,
+    backgroundColor: COLORS.primary,
+    padding: 10,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+
   categoryContainer: {
     marginTop: 40,
     marginHorizontal: 20,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
   },
   sectionTitle: {
     marginHorizontal: 20,
     marginVertical: 20,
+
+    paddingTop: 20,
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  sectionTitle2: {
+    marginHorizontal: 20,
+    marginVertical: 20,
+    paddingTop: 20,
     fontWeight: "bold",
     fontSize: 20,
   },
