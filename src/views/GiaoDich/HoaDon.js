@@ -133,7 +133,27 @@ function HoaDon({ route, navigation }) {
         console.log(err);
       });
 
-    Alert.alert("Bạn đã đặt vé thành công!");
+    Alert.alert("Thông báo", "Bạn xác nhận đặt vé!", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel Pressed"),
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => {
+          Alert.alert("Thông Báo", "Bạn đã đặt vé thành công!", [
+            {
+              text: "OK",
+              onPress: async () => {
+                navigation.navigate("TabNavigation");
+              },
+            },
+          ]);
+        },
+      },
+    ]);
+
     // navigation.navigate("DetailsTour");
   };
 
@@ -321,7 +341,6 @@ function HoaDon({ route, navigation }) {
           // }
           onPress={() => {
             payment();
-            
           }}
         >
           <Text

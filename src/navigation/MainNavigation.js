@@ -24,7 +24,7 @@ const Stack = createNativeStackNavigator();
 const HomeStackScreen = () => {
     return (
         <Stack.Navigator
-            initialRouteName="TabNavigation"
+            initialRouteName="SignIn"
             screenOptions={{ headerShown: false }}
         >
             <Stack.Screen name="TabNavigation" component={TabNavigation} />
@@ -76,8 +76,8 @@ const MainNavigation = () => {
     return (
         // <Provider store={store}>
         <NavigationContainer>
-            {isLogin ? <HomeStackScreen /> : <SignInUp />}
-            {/* <HomeStackScreen /> */}
+            {/* {isLogin ? <HomeStackScreen /> : <SignInUp />} */}
+            <HomeStackScreen />
             {/* <SignInUp /> */}
         </NavigationContainer>
         // </Provider>

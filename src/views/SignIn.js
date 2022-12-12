@@ -29,7 +29,7 @@ import { createYeuThich } from "../redux/slice/yeuThich";
 const SignIn = () => {
   const [userInfo, setUserInfo] = useState({
     email: "nam@gmail.com",
-    password: "123456",
+    password: "abc123456",
   });
   const dispatch = useDispatch();
   const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -74,6 +74,7 @@ const SignIn = () => {
   const { email, password } = userInfo;
 
   const [error, setError] = useState("");
+  const navigation = useNavigation();
 
   const handleOnChangeText = (value, fieldName) => {
     setUserInfo({ ...userInfo, [fieldName]: value });
@@ -128,7 +129,7 @@ const SignIn = () => {
           // Email: email,
           // MatKhau: password,
 
-          Email: "hai@gmail.com",
+          Email: "van@gmail.com",
           MatKhau: "abc123456",
         };
         await axiosClient
@@ -159,7 +160,9 @@ const SignIn = () => {
                 console.log(">>>>>>: ", res.data);
                 if (res.data.success) {
                   setUserInfo({ email: "", password: "" });
+                  
                 }
+                navigation.navigate("TabNavigation");
               }
             }
           })
@@ -191,7 +194,7 @@ const SignIn = () => {
     console.log("Email");
   };
 
-  const navigation = useNavigation();
+  
   const onSignUp = () => {
     navigation.navigate("SignUp");
   };

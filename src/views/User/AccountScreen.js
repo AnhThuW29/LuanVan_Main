@@ -46,6 +46,7 @@ const AccountScreen = ({ navigation }) => {
     ],
     Quyen: "1",
   });
+  console.log("hhhhhh: ",inforUser);
   const dataStoreUser = useSelector((s) => s.storeInforUser);
   const d = new Date();
   const dateNow =
@@ -122,7 +123,8 @@ const AccountScreen = ({ navigation }) => {
             <View style={styles.row}>
               <Icon name="home" color="#777777" size={20} />
               <Text style={{ color: "#777777", marginLeft: 20 }}>
-                {inforUser.DiaChi[0].ChiTiet}
+                {inforUser.DiaChi.length != 0 ? inforUser.DiaChi[0].ChiTiet : ""}
+                {console.log("HVVVVVVVVVVVVVVVVc", inforUser.DiaChi.length )}
               </Text>
             </View>
           </View>

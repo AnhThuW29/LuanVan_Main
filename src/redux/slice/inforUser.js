@@ -14,7 +14,7 @@ export const InforUser = createSlice({
         TinhTP: "",
         QuanHuyen: "",
         XaPhuong: "",
-        ChiTiet: "",
+        ChiTiet: "ct",
       },
     ],
     GioiTinh: "",

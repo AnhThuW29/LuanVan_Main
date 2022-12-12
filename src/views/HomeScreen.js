@@ -351,7 +351,7 @@ function HomeScreen({ navigation }) {
           </View>
         </View>
 
-        {/* {(dataTourFavorite.length > 0 && dataKhachHang.Quyen == "MUA") && (
+        {(dataTourFavorite.length > 0 && dataKhachHang.Quyen == "MUA") && (
           <View>
             <Text style={styles.sectionTitle}>Địa điểm yêu thích của bạn</Text>
             <FlatList
@@ -378,7 +378,7 @@ function HomeScreen({ navigation }) {
               />
             </View>
           </View>
-        )} */}
+        )}
 
         <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
 

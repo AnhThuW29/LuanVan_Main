@@ -15,6 +15,7 @@ import CustomButton from "../consts/CustomButton";
 import CustomInput from "../consts/CustomInput";
 import SignInScreen from "../views/SignIn";
 import CustomSwitch from "../consts/CustomSwitch";
+import { Alert } from "react-native";
 
 const validationSchema = Yup.object({
   HoTen: Yup.string()
@@ -41,6 +42,7 @@ const SignUp = () => {
     NgaySinh: "",
     CMND: "",
   };
+  const navigation = useNavigation();
 
   const [finished, setFinished] = useState(1);
 
@@ -49,12 +51,6 @@ const SignUp = () => {
   };
 
   const { Email, HoTen, SDT, MatKhau, NgaySinh, CMND } = userInfo;
-  // const [userBan, setUserBan] = useState({
-  //     Quyen: "BAN"
-  // })
-  // const [userMua, setUserMua] = useState({
-  //     Quyen: "MUA"
-  // })
 
   const [error, setError] = useState("");
 
@@ -95,33 +91,91 @@ const SignUp = () => {
     }
   };
 
-  const signUp = async (values, formikAction) => {
-    
+  const signUpUserBan = async (values, formikAction) => {
     const user = {
-      HoTen: "Phan Hải Dương",
-      NgaySinh: "12/3/2000",
-      SDT: "0325963852",
-      DiaChi: [
-        {
-          TinhTP: "Bạc Liêu",
-          QuanHuyen: "Giá Rai",
-          XaPhuong: "Phước Long",
-          ChiTiet: "Phước Long, Giá Rai, Bạc Liêu",
-        },
-      ],
-      GioiTinh: "nam",
-      Email: "duong@gmail.com",
-      CMND: "335678419",
-      MatKhau: "abc123456",
-      YeuThich: [],
-      LichSu: [],
+      HoTen: values.HoTen,
+      SDT: values.SDT,
+
+      Email: values.Email,
+      MatKhau: values.MatKhau,
+      CMND: values.CMND,
+
       Quyen: "BAN",
     };
-    // const res = await axiosClient.post("/v1/nguoidung/add", {
-    //     ...values,
-    // });
-    // console.log(res.data);
-    console.log(values);
+    const posstAxios = async () => {
+      await axiosClient
+        .post("/nguoidung/add", {
+          HoTen: values.HoTen,
+          SDT: values.SDT,
+          Email: values.Email,
+          MatKhau: values.MatKhau,
+          CMND: values.CMND,
+          Quyen: "BAN",
+        })
+        .then((res) => {
+          console.log(res.data);
+
+          Alert.alert("Thông Báo", "Tạo Tài khoản thành công!", [
+            {
+              text: "OK",
+              onPress: async () => {
+                onSignIn();
+              },
+            },
+          ]);
+        })
+        .catch((err) => {
+          console.log("ERR signup: ", err);
+        });
+    };
+
+    posstAxios();
+    console.log("BAN: ", user);
+    formikAction.resetForm();
+    formikAction.setSubmitting(false);
+  };
+
+  const signUpUserMua = async (values, formikAction) => {
+    const user = {
+      HoTen: values.HoTen,
+      SDT: values.SDT,
+
+      Email: values.Email,
+      MatKhau: values.MatKhau,
+
+      Quyen: "MUA",
+    };
+    const posstAxios = async () => {
+      await axiosClient
+        .post("/nguoidung/add", {
+          HoTen: values.HoTen,
+          SDT: values.SDT,
+
+          Email: values.Email,
+          MatKhau: values.MatKhau,
+
+          Quyen: "MUA",
+        })
+        .then((res) => {
+          console.log(res.data);
+
+          Alert.alert("Thông Báo", "Tạo Tài khoản thành công!", [
+            {
+              text: "OK",
+              onPress: async () => {
+                onSignIn();
+              },
+            },
+          ]);
+        })
+        .catch((err) => {
+          console.log("ERR signup: ", err);
+        });
+    };
+
+    posstAxios();
+
+    console.log("MUA: ", user);
     formikAction.resetForm();
     formikAction.setSubmitting(false);
   };
@@ -130,7 +184,6 @@ const SignUp = () => {
     console.log("Điều khoản và chính sách");
   };
 
-  const navigation = useNavigation();
   const onSignIn = () => {
     navigation.navigate("SignIn");
   };
@@ -140,7 +193,7 @@ const SignUp = () => {
       <Formik
         initialValues={userInfo}
         validationSchema={validationSchema}
-        onSubmit={signUp}
+        onSubmit={signUpUserMua}
       >
         {({
           values,
@@ -229,7 +282,7 @@ const SignUp = () => {
       <Formik
         initialValues={userInfo}
         validationSchema={validationSchema}
-        onSubmit={signUp}
+        onSubmit={signUpUserBan}
       >
         {({
           values,
@@ -240,7 +293,8 @@ const SignUp = () => {
           handleBlur,
           handleSubmit,
         }) => {
-          const { fullname, email, phone, password, NgaySinh, CMND } = values;
+          // const { fullname, email, phone, password, NgaySinh, CMND } = values;
+          const { HoTen, email, SDT, MatKhau, CMND } = values;
 
           return (
             <>
@@ -249,39 +303,39 @@ const SignUp = () => {
                 iconName="email"
                 autoCapitalize="none"
                 value={email}
-                error={touched.email && errors.email}
+                error={touched.Email && errors.Email}
                 // error='Email không hợp lệ'
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
+                onChangeText={handleChange("Email")}
+                onBlur={handleBlur("Email")}
               />
               <CustomInput
                 placeholder="Nhập họ và tên"
                 iconName="account-circle"
                 autoCapitalize="none"
-                value={fullname}
-                error={touched.fullname && errors.fullname}
-                onChangeText={handleChange("fullname")}
-                onBlur={handleBlur("fullname")}
+                value={HoTen}
+                error={touched.HoTen && errors.HoTen}
+                onChangeText={handleChange("HoTen")}
+                onBlur={handleBlur("HoTen")}
               />
               <CustomInput
                 placeholder="Nhập số điện thoại"
                 iconName="phone"
                 keyboardType="numeric"
-                value={phone}
-                error={touched.phone && errors.phone}
-                onChangeText={handleChange("phone")}
-                onBlur={handleBlur("phone")}
+                value={SDT}
+                error={touched.SDT && errors.SDT}
+                onChangeText={handleChange("SDT")}
+                onBlur={handleBlur("SDT")}
               />
               <CustomInput
                 placeholder="Nhập mật khẩu"
                 iconName="lock"
-                value={password}
-                error={touched.password && errors.password}
-                onChangeText={handleChange("password")}
-                onBlur={handleBlur("password")}
+                value={MatKhau}
+                error={touched.MatKhau && errors.MatKhau}
+                onChangeText={handleChange("MatKhau")}
+                onBlur={handleBlur("MatKhau")}
                 password
               />
-              <CustomInput
+              {/* <CustomInput
                 placeholder="Ngày sinh"
                 iconName="cake"
                 keyboardType="numeric"
@@ -289,7 +343,7 @@ const SignUp = () => {
                 error={touched.NgaySinh && errors.NgaySinh}
                 onChangeText={handleChange("NgaySinh")}
                 onBlur={handleBlur("NgaySinh")}
-              />
+              /> */}
               <CustomInput
                 placeholder="CMND/CCCD"
                 iconName="fact-check"
