@@ -99,12 +99,12 @@ const SignIn = () => {
             .get("/hoadon/getbyidkhachhang/" + idUser)
             .then((res) => {
                 if (res.data.length > 1) {
-                    // console.log("HOADON: ", res.data);
+                    console.log("HOADON: ", res.data);
                     dispatch(createHoaDon(res.data));
                 }
                 if (res.data.length == 1) {
-                    // console.log("HOADON111: ", res.data);
-                    let data = [res.data];
+                    console.log("HOADON111: ", res.data);
+                    let data = res.data;
                     dispatch(createHoaDon(data));
                 }
             })
@@ -130,7 +130,7 @@ const SignIn = () => {
                     // Email: email,
                     // MatKhau: password,
 
-                    Email: "duong@gmail.com",
+                    Email: "long@gmail.com",
                     MatKhau: "abc123456",
                 };
                 await axiosClient
