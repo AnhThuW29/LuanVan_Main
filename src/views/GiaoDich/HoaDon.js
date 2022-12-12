@@ -154,7 +154,6 @@ function HoaDon({ route, navigation }) {
       },
     ]);
 
-    // navigation.navigate("DetailsTour");
   };
 
   ///------------------------
