@@ -28,8 +28,8 @@ import { createYeuThich } from "../redux/slice/yeuThich";
 
 const SignIn = () => {
     const [userInfo, setUserInfo] = useState({
-        email: "nam@gmail.com",
-        password: "abc123456",
+        email: "",
+        password: "",
     });
     const dispatch = useDispatch();
     const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -104,7 +104,7 @@ const SignIn = () => {
                 }
                 if (res.data.length == 1) {
                     // console.log("HOADON111: ", res.data);
-                    let data = [res.data];
+                    let data = res.data;
                     dispatch(createHoaDon(data));
                 }
             })
@@ -127,11 +127,11 @@ const SignIn = () => {
         if (isValidForm()) {
             try {
                 const user = {
-                    // Email: email,
-                    // MatKhau: password,
-
-                    Email: "duong@gmail.com",
+                    Email: email,
                     MatKhau: "abc123456",
+
+                    // Email: "van@gmail.com",
+                    // MatKhau: "abc123456",
                 };
                 await axiosClient
                     .post("/nguoidung/dangnhap", user)

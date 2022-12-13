@@ -168,8 +168,8 @@ function HoaDon({ route, navigation }) {
                     color={COLORS.white}
                     onPress={navigation.goBack}
                 />
-                <Text>Xin chào, {nameKH}</Text>
-                <Icon name="notifications" size={28} color={COLORS.white} />
+                <Text style={{ fontSize: 18 }}>Xin chào, {nameKH}</Text>
+                <Icon name="notifications" size={28} color={COLORS.primary} />
             </View>
 
             <ScrollView>
@@ -181,8 +181,17 @@ function HoaDon({ route, navigation }) {
                     <View style={styles.infoItemLeftWrapper}>
                         <Text style={styles.infoItemTitle}>Tên tour:</Text>
                     </View>
-                    <View style={styles.infoItemRightWrapper}>
-                        <Text style={styles.infoItemText}>{post.TieuDe}</Text>
+                    <View
+                        style={[styles.infoItemRightWrapper, { width: "70%" }]}
+                    >
+                        <Text
+                            style={[
+                                styles.infoItemText,
+                                { numberOfLines: 1, ellipsizeMode: "tail" },
+                            ]}
+                        >
+                            {post.TieuDe}
+                        </Text>
                     </View>
                 </View>
                 <View style={styles.infoWrapper}>
@@ -422,8 +431,8 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     infoItemRightWrapper: {
-        paddingRight: 20,
-        marginRight: 20,
+        // paddingRight: 20,
+        marginRight: 10,
     },
     infoItemTitle: {
         fontSize: 16,
