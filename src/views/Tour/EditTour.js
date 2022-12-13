@@ -99,7 +99,7 @@ function EditTour({ navigation, route }) {
               <CustomInput
                 placeholder="Độ dài chuyến đi"
                 iconName="date-range"
-                value={JSON.stringify(SoNgay)}
+                value={SoNgay}
                 onChangeText={(text) => setSoNgay(text)}
               />
               <CustomInput

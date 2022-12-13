@@ -175,22 +175,6 @@ function LichSu({ route, navigation }) {
         }
     };
 
-<<<<<<< HEAD
-  return (
-    <View style={styles.AndroidSafeArea}>
-      <View style={styles.header}>
-        <Icon
-          name="arrow-back-ios"
-          size={28}
-          color={COLORS.white}
-          onPress={navigation.goBack}
-        />
-        <Text style={{ fontSize: 18, fontWeight: "500" }}>
-          Đơn hàng của tôi
-        </Text>
-        <Icon name="notifications" size={28} color={COLORS.primary} />
-      </View>
-=======
     return (
         <View style={styles.AndroidSafeArea}>
             <View style={styles.header}>
@@ -205,7 +189,6 @@ function LichSu({ route, navigation }) {
                 </Text>
                 <Icon name="notifications" size={28} color={COLORS.white} />
             </View>
->>>>>>> 9dce5133d1310f8069b75c2f84ac136b1a746fea
 
             <View>
                 <CustomSwitch

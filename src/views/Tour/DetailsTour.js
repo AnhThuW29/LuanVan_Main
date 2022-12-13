@@ -123,7 +123,7 @@ const DetailsTour = ({ navigation, route }) => {
               onPress={navigation.goBack}
             />
 
-            {dataKhachHang.Quyen == "BAN" ? (
+            {dataKhachHang.Quyen == "BAN" && dataKhachHang.id == post.ChuTour ? (
               <View style={{ flexDirection: "row" }}>
                 <Icon
                   name="edit"
