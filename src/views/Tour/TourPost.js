@@ -7,8 +7,6 @@ import {
     StatusBar,
     Image,
     Alert,
-    // Alert,
-    // PermissionsAndroid,
 } from "react-native";
 import {
     NativeBaseProvider,
@@ -258,7 +256,7 @@ const TourPost = ({ navigation }) => {
                             }
                         />
                         <CustomInput
-                            placeholder="Số điện thoại"
+                            placeholder="Phone"
                             iconName="phone"
                             value={SDT}
                             keyboardType="number-pad"

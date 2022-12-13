@@ -28,8 +28,8 @@ import { createYeuThich } from "../redux/slice/yeuThich";
 
 const SignIn = () => {
     const [userInfo, setUserInfo] = useState({
-        email: "",
-        password: "",
+        email: "nam@gmail.com",
+        password: "abc123456",
     });
     const dispatch = useDispatch();
     const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -99,11 +99,11 @@ const SignIn = () => {
             .get("/hoadon/getbyidkhachhang/" + idUser)
             .then((res) => {
                 if (res.data.length > 1) {
-                    // console.log("HOADON: ", res.data);
+                    console.log("HOADON: ", res.data);
                     dispatch(createHoaDon(res.data));
                 }
                 if (res.data.length == 1) {
-                    // console.log("HOADON111: ", res.data);
+                    console.log("HOADON111: ", res.data);
                     let data = res.data;
                     dispatch(createHoaDon(data));
                 }
@@ -127,11 +127,11 @@ const SignIn = () => {
         if (isValidForm()) {
             try {
                 const user = {
-                    Email: email,
-                    MatKhau: "abc123456",
+                    // Email: email,
+                    // MatKhau: password,
 
-                    // Email: "van@gmail.com",
-                    // MatKhau: "abc123456",
+                    Email: "duong@gmail.com",
+                    MatKhau: "abc123456",
                 };
                 await axiosClient
                     .post("/nguoidung/dangnhap", user)

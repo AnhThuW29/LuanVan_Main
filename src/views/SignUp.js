@@ -160,7 +160,7 @@ const SignUp = () => {
                 })
                 .then((res) => {
                     console.log(res.data);
-                    console.log(res.data);
+
                     Alert.alert("Thông Báo", "Tạo Tài khoản thành công!", [
                         {
                             text: "OK",

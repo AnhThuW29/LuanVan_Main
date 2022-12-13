@@ -21,12 +21,51 @@ import { Title, Caption } from "react-native-paper";
 import ChiTietHoaDon from "./ChiTietHoaDon";
 import CustomInput from "../../consts/CustomInput";
 import axiosClient from "../../api/axiosClient";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function ThongKe({ navigation }) {
+    const dispatch = useDispatch();
+    const [finished, setFinished] = useState(1);
     const [inforUser, setInforUser] = useState({
+        stateLogin: false,
+        id: "id",
+        HoTen: "name",
+        NgaySinh: "2000",
+        SDT: "sdt",
+        DiaChi: [
+            {
+                TinhTP: "t",
+                QuanHuyen: "h",
+                XaPhuong: "p",
+                ChiTiet: "ct",
+            },
+        ],
+        Email: "email",
+        YeuThich: ["id"],
+        LichSu: [
+            {
+                Tour: "",
+                TrangThai: "x",
+            },
+        ],
         Quyen: "1",
     });
+    const [inforHoaDon, setInforHoaDon] = useState([
+        {
+            MaHoaDon: "TuDong",
+            IDKhachHang: "id",
+            IDTour: {
+                TieuDe: "“KHÁM PHÁ VÀ NÂNG NIU VẺ ĐẸP CỦA BIỂN” 3N2Đ",
+                HinhAnh: "danang.jpg",
+            },
+            NgayKhoiHanh: "12",
+            SoLuongKhach: 1,
+            TongTien: 1,
+        },
+    ]);
+
+    const [listTour, setListTour] = useState([]);
+
     const dataKhachHang = useSelector((s) => s.storeInforUser);
     const nameKH = dataKhachHang.HoTen.slice(
         dataKhachHang.HoTen.lastIndexOf(" ")
@@ -40,6 +79,20 @@ function ThongKe({ navigation }) {
     useEffect(() => {
         getDataThongKe();
     }, [dataStoreUser]);
+
+    const dataStoreHoaDon = useSelector((s) => s.storeInforHoaDon);
+    useEffect(() => {
+        setInforUser(dataStoreUser);
+        if (dataStoreHoaDon.HD[0].IDTour != "0") {
+            setInforHoaDon(dataStoreHoaDon.HD);
+            const t = dataStoreHoaDon.HD.map((i) => {
+                return i[0];
+            });
+            setListTour(dataStoreHoaDon.HD);
+
+            console.log("LICHSU HOA DON: ", listTour);
+        }
+    }, [dataStoreUser, dataStoreHoaDon]);
 
     const getDataThongKe = async () => {
         await axiosClient
@@ -63,7 +116,7 @@ function ThongKe({ navigation }) {
                     onPress={navigation.goBack}
                 />
                 <Text style={{ fontSize: 18 }}>Xin chào, {nameKH}</Text>
-                <Icon name="notifications" size={28} color={COLORS.white} />
+                <Icon name="notifications" size={28} color={COLORS.primary} />
             </View>
 
             <ScrollView>
@@ -117,24 +170,30 @@ function ThongKe({ navigation }) {
                         </View>
                     </View>
                     <View style={styles.Loai}>
-                        <Text style={{ fontSize: 16 }}>Doanh thu</Text>
+                        <Text style={{ fontSize: 16 }}>Doanh thu hôm nay</Text>
                         <Title style={{ fontWeight: "bold", fontSize: 16 }}>
                             {dataStoreUser.Quyen == "MUA"
                                 ? "1m"
-                                : dataThongKe.TongDoanhThu}
+                                : dataThongKe.TongHomNay}
                         </Title>
                     </View>
                     <View style={styles.Loai}>
-                        <Text style={{ fontSize: 16 }}>Chi phí</Text>
-                        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                            500
+                        <Text style={{ fontSize: 16 }}>
+                            Số lượng tour đã bán
                         </Text>
+                        <Title style={{ fontWeight: "bold", fontSize: 16 }}>
+                            {dataStoreUser.Quyen == "MUA"
+                                ? "0"
+                                : dataThongKe.TongTourDaBanL}
+                        </Title>
                     </View>
                     <View style={styles.Loai}>
-                        <Text style={{ fontSize: 16 }}>Số lượng bán</Text>
-                        <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                            2
-                        </Text>
+                        <Text style={{ fontSize: 16 }}>Số lượng bài đăng</Text>
+                        <Title style={{ fontWeight: "bold", fontSize: 16 }}>
+                            {dataStoreUser.Quyen == "MUA"
+                                ? "0"
+                                : dataThongKe.SoLuongBaiDang}
+                        </Title>
                     </View>
                 </View>
 
@@ -170,7 +229,7 @@ function ThongKe({ navigation }) {
                             >
                                 1000
                             </Text>
-                            <Text style={{ fontSize: 16 }}>Tên tour</Text>
+                            <Text style={{ fontSize: 16 }}>tên tour</Text>
                             <Text style={{ fontSize: 16 }}>Ngày</Text>
                         </View>
                     </View>
