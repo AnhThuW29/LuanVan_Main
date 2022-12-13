@@ -115,7 +115,9 @@ function ThongKe({ navigation }) {
                     color={COLORS.white}
                     onPress={navigation.goBack}
                 />
-                <Text style={{ fontSize: 18 }}>Xin chào, {nameKH}</Text>
+                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    Xin chào, {nameKH}
+                </Text>
                 <Icon name="notifications" size={28} color={COLORS.primary} />
             </View>
 

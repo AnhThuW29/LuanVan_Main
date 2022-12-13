@@ -29,7 +29,7 @@ import { createYeuThich } from "../redux/slice/yeuThich";
 const SignIn = () => {
     const [userInfo, setUserInfo] = useState({
         email: "nam@gmail.com",
-        password: "abc123456",
+        password: "ád1234",
     });
     const dispatch = useDispatch();
     const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -130,7 +130,7 @@ const SignIn = () => {
                     // Email: email,
                     // MatKhau: password,
 
-                    Email: "long@gmail.com",
+                    Email: "duong@gmail.com",
                     MatKhau: "abc123456",
                 };
                 await axiosClient
@@ -246,6 +246,7 @@ const SignIn = () => {
                             onChangeText={(value) =>
                                 handleOnChangeText(value, "password")
                             }
+                            autoCapitalize="none"
                             password
                             value={password}
                             // error={error.password}

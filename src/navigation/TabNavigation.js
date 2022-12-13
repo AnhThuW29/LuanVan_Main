@@ -10,6 +10,7 @@ import LichSu from "../views/GiaoDich/LichSu";
 import ThongKe from "../views/GiaoDich/ThongKe";
 import { useSelector } from "react-redux";
 import TourPost from "../views/Tour/TourPost";
+import ThongBao from "../views/User/ThongBao";
 
 const Tab = createBottomTabNavigator();
 
@@ -34,12 +35,16 @@ const adminTab = () => {
                 }}
             />
             <Tab.Screen
-                name="Đăng bài"
-                component={PostScreen}
+                name="Thông báo"
+                component={ThongBao}
                 options={{
                     tabBarIcon: ({ color, size }) => {
                         return (
-                            <Icon name="post-add" color={color} size={size} />
+                            <Icon
+                                name="notifications"
+                                color={color}
+                                size={size}
+                            />
                         );
                     },
                 }}
@@ -165,13 +170,13 @@ const TabNavigation = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Đăng bài"
-                    component={TourPost}
+                    name="Thông báo"
+                    component={ThongBao}
                     options={{
                         tabBarIcon: ({ color, size }) => {
                             return (
                                 <Icon
-                                    name="post-add"
+                                    name="notifications"
                                     color={color}
                                     size={size}
                                 />

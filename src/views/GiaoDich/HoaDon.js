@@ -168,8 +168,8 @@ function HoaDon({ route, navigation }) {
                     color={COLORS.white}
                     onPress={navigation.goBack}
                 />
-                <Text style={{ fontSize: 18 }}>Xin chào, {nameKH}</Text>
-                <Icon name="notifications" size={28} color={COLORS.primary} />
+                <Text>Xin chào, {nameKH}</Text>
+                <Icon name="notifications" size={28} color={COLORS.white} />
             </View>
 
             <ScrollView>
@@ -187,7 +187,7 @@ function HoaDon({ route, navigation }) {
                         <Text
                             style={[
                                 styles.infoItemText,
-                                { numberOfLines: 1, ellipsizeMode: "tail" },
+                                { numberOfLines: 2, ellipsizeMode: "tail" },
                             ]}
                         >
                             {post.TieuDe}

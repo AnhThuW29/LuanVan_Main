@@ -150,9 +150,14 @@ const TourPost = ({ navigation }) => {
                         color={COLORS.white}
                         onPress={navigation.goBack}
                     />
-                    <Text style={{ fontSize: 18, paddingLeft: 55 }}>
+                    <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                         Xin chào, {userName}
                     </Text>
+                    <Icon
+                        name="notifications"
+                        size={28}
+                        color={COLORS.primary}
+                    />
                 </View>
                 <ScrollView>
                     <>
@@ -352,6 +357,7 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: "row",
+        justifyContent: "space-around",
         backgroundColor: COLORS.primary,
     },
     commandButton: {

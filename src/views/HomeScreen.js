@@ -414,7 +414,7 @@ function HomeScreen({ navigation }) {
                 <Text style={styles.sectionTitle2}>Khám phá thêm</Text>
 
                 {/* <ListCategories /> */}
-                <ScrollView horizontal={true} scrollEnabled={false}>
+                <ScrollView horizontal={true} scrollEnabled={true}>
                     <View>
                         {/* <ScrollView
                         scrollEnabled={false}

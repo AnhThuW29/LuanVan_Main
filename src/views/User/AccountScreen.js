@@ -176,108 +176,159 @@ const AccountScreen = ({ navigation }) => {
 
                     <View style={styles.menuWrapper}>
                         {dataStoreUser.Quyen == "MUA" ? (
+                            <View>
+                                <TouchableRipple
+                                    onPress={() =>
+                                        navigation.navigate("Favorite")
+                                    }
+                                >
+                                    <View style={styles.menuItem}>
+                                        <Icon
+                                            name="favorite"
+                                            color="#FF6347"
+                                            size={25}
+                                        />
+                                        <Text style={styles.menuItemText}>
+                                            Your Favorites
+                                        </Text>
+                                    </View>
+                                </TouchableRipple>
+                                <TouchableRipple
+                                    onPress={() =>
+                                        navigation.navigate("YeuCau")
+                                    }
+                                >
+                                    <View style={styles.menuItem}>
+                                        <Icon
+                                            name="question-answer"
+                                            color="#FF6347"
+                                            size={25}
+                                        />
+                                        <Text style={styles.menuItemText}>
+                                            Đặt tour mới theo yêu cầu
+                                        </Text>
+                                    </View>
+                                </TouchableRipple>
+                            </View>
+                        ) : (
+                            <></>
+                        )}
+                        <View style={styles.menuWrapper}>
+                            {dataStoreUser.Quyen == "BAN" ? (
+                                <View>
+                                    <TouchableRipple
+                                        onPress={() =>
+                                            navigation.navigate("TourPost")
+                                        }
+                                    >
+                                        <View style={styles.menuItem}>
+                                            <Icon
+                                                name="post-add"
+                                                color="#FF6347"
+                                                size={25}
+                                            />
+                                            <Text style={styles.menuItemText}>
+                                                Đăng bài
+                                            </Text>
+                                        </View>
+                                    </TouchableRipple>
+                                </View>
+                            ) : (
+                                <></>
+                            )}
+
                             <TouchableRipple
-                                onPress={() => navigation.navigate("Favorite")}
+                                onPress={() =>
+                                    navigation.navigate("EditAccount")
+                                }
                             >
                                 <View style={styles.menuItem}>
                                     <Icon
-                                        name="favorite"
+                                        name="edit"
                                         color="#FF6347"
                                         size={25}
                                     />
                                     <Text style={styles.menuItemText}>
-                                        Your Favorites
+                                        Cập nhật thông tin
                                     </Text>
                                 </View>
                             </TouchableRipple>
-                        ) : (
-                            <></>
-                        )}
-                        <TouchableRipple
-                            onPress={() => navigation.navigate("EditAccount")}
-                        >
-                            <View style={styles.menuItem}>
-                                <Icon name="edit" color="#FF6347" size={25} />
-                                <Text style={styles.menuItemText}>
-                                    Cập nhật thông tin
-                                </Text>
-                            </View>
-                        </TouchableRipple>
-                        <TouchableRipple
-                            onPress={() =>
-                                navigation.navigate("ChangePassword")
-                            }
-                        >
-                            <View style={styles.menuItem}>
-                                <Icon
-                                    name="credit-card"
-                                    color="#FF6347"
-                                    size={25}
-                                />
-                                <Text style={styles.menuItemText}>
-                                    Đổi mật khẩu
-                                </Text>
-                            </View>
-                        </TouchableRipple>
-                        {/* <TouchableRipple onPress={() => {}}>
+                            <TouchableRipple
+                                onPress={() =>
+                                    navigation.navigate("ChangePassword")
+                                }
+                            >
+                                <View style={styles.menuItem}>
+                                    <Icon
+                                        name="credit-card"
+                                        color="#FF6347"
+                                        size={25}
+                                    />
+                                    <Text style={styles.menuItemText}>
+                                        Đổi mật khẩu
+                                    </Text>
+                                </View>
+                            </TouchableRipple>
+                            {/* <TouchableRipple onPress={() => {}}>
               <View style={styles.menuItem}>
                 <Icon name="support-agent" color="#FF6347" size={25} />
                 <Text style={styles.menuItemText}>Support</Text>
               </View>
             </TouchableRipple> */}
-                        <TouchableRipple
-                            onPress={() => {
-                                const resetUser = {
-                                    stateLogin: false,
-                                    id: "id",
-                                    HoTen: "",
-                                    NgaySinh: "",
-                                    SDT: "",
-                                    DiaChi: [
-                                        {
-                                            TinhTP: "",
-                                            QuanHuyen: "",
-                                            XaPhuong: "",
-                                            ChiTiet: "",
+                            <TouchableRipple
+                                onPress={() => {
+                                    const resetUser = {
+                                        stateLogin: false,
+                                        id: "id",
+                                        HoTen: "",
+                                        NgaySinh: "",
+                                        SDT: "",
+                                        DiaChi: [
+                                            {
+                                                TinhTP: "",
+                                                QuanHuyen: "",
+                                                XaPhuong: "",
+                                                ChiTiet: "",
+                                            },
+                                        ],
+                                        Email: "ykgk",
+                                        YeuThich: {
+                                            Tour: [""],
+                                            KhachSan: [""],
                                         },
-                                    ],
-                                    Email: "ykgk",
-                                    YeuThich: {
-                                        Tour: [""],
-                                        KhachSan: [""],
-                                    },
-                                    LichSu: {
-                                        LSTour: [
-                                            {
-                                                Tour: "",
-                                                TrangThai: "x",
-                                            },
-                                        ],
-                                        LSKhachSan: [
-                                            {
-                                                KhachSan: "",
-                                                TrangThai: "x",
-                                            },
-                                        ],
-                                    },
-                                    Quyen: "",
-                                };
-                                // dispatch(updateInforUser(resetUser));
+                                        LichSu: {
+                                            LSTour: [
+                                                {
+                                                    Tour: "",
+                                                    TrangThai: "x",
+                                                },
+                                            ],
+                                            LSKhachSan: [
+                                                {
+                                                    KhachSan: "",
+                                                    TrangThai: "x",
+                                                },
+                                            ],
+                                        },
+                                        Quyen: "",
+                                    };
+                                    // dispatch(updateInforUser(resetUser));
 
-                                DevSettings.reload();
-                            }}
-                        >
-                            <View style={styles.menuItem}>
-                                <Icon
-                                    name="settings"
-                                    color="#FF6347"
-                                    size={25}
-                                />
-                                <Text style={styles.menuItemText}>
-                                    Đăng xuất
-                                </Text>
-                            </View>
-                        </TouchableRipple>
+                                    DevSettings.reload();
+                                }}
+                            >
+                                <View style={styles.menuItem}>
+                                    <Icon
+                                        name="settings"
+                                        color="#FF6347"
+                                        size={25}
+                                    />
+                                    <Text style={styles.menuItemText}>
+                                        Đăng xuất
+                                    </Text>
+                                </View>
+                            </TouchableRipple>
+                        </View>
                     </View>
                 </View>
             </ScrollView>
