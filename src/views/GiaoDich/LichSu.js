@@ -179,7 +179,7 @@ function LichSu({ route, navigation }) {
         <Text style={{ fontSize: 18, fontWeight: "500" }}>
           Đơn hàng của tôi
         </Text>
-        <Icon name="notifications" size={28} color={COLORS.white} />
+        <Icon name="notifications" size={28} color={COLORS.primary} />
       </View>
 
       <View>

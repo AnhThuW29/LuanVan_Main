@@ -28,8 +28,8 @@ import { createYeuThich } from "../redux/slice/yeuThich";
 
 const SignIn = () => {
     const [userInfo, setUserInfo] = useState({
-        email: "nam@gmail.com",
-        password: "abc123456",
+        email: "",
+        password: "",
     });
     const dispatch = useDispatch();
     const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -127,10 +127,10 @@ const SignIn = () => {
         if (isValidForm()) {
             try {
                 const user = {
-                    // Email: email,
+                    Email: email,
                     // MatKhau: password,
 
-                    Email: "long@gmail.com",
+                    // Email: "long@gmail.com",
                     MatKhau: "abc123456",
                 };
                 await axiosClient

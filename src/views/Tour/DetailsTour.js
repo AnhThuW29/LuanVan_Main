@@ -90,7 +90,7 @@ const DetailsTour = ({ navigation, route }) => {
       {
         text: "OK",
         onPress: async () => {
-         await axiosClient.delete("/tour/delete/" + post._id).then((res) => {
+          await axiosClient.delete("/tour/delete/" + post._id).then((res) => {
             Alert.alert("Thông báo", "Xóa tour thành công", [
               {
                 text: "OK",
@@ -158,7 +158,7 @@ const DetailsTour = ({ navigation, route }) => {
                 marginBottom: 20,
               }}
             >
-              {product.TieuDe}
+              {product.DiaDiem}
             </Text>
             <View style={{ flexDirection: "row" }}>
               <Icon name="star" size={30} color={COLORS.orange} />
@@ -200,7 +200,7 @@ const DetailsTour = ({ navigation, route }) => {
                   color: COLORS.primary,
                 }}
               >
-                {product.DiaDiem}
+                {product.TieuDe}
               </Text>
             </View>
           </View>
