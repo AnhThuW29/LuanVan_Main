@@ -182,7 +182,7 @@ function HoaDon({ route, navigation }) {
                         <Text style={styles.infoItemTitle}>Tên tour:</Text>
                     </View>
                     <View
-                        style={[styles.infoItemRightWrapper, { width: "70%" }]}
+                        style={[styles.infoItemRightWrapper, { width: "80%" }]}
                     >
                         <Text
                             style={[
