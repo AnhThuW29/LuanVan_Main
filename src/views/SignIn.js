@@ -30,6 +30,8 @@ const SignIn = () => {
     const [userInfo, setUserInfo] = useState({
         email: "nam@gmail.com",
         password: "ád1234",
+        // email: "",
+        // password: "",
     });
     const dispatch = useDispatch();
     const hhhhhhh = useSelector((s) => s.storeInforUser);
@@ -130,7 +132,7 @@ const SignIn = () => {
                     // Email: email,
                     // MatKhau: password,
 
-                    Email: "duong@gmail.com",
+                    Email: "minh@gmail.com",
                     MatKhau: "abc123456",
                 };
                 await axiosClient
