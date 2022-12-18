@@ -21,6 +21,7 @@ import SignUp from "../views/SignUp";
 import { Provider, useSelector } from "react-redux";
 import store from "../redux/store";
 import ChangePassword from "../views/User/ChangePassword";
+import ThongBaoClient from "../views/User/ThongBaoClient";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,8 @@ const HomeStackScreen = () => {
             <Stack.Screen name="EditTour" component={EditTour} />
             <Stack.Screen name="YeuCau" component={YeuCau} />
             <Stack.Screen name="ThongBao" component={ThongBao} />
+            <Stack.Screen name="ThongBaoclient" component={ThongBaoClient} />
+
             <Stack.Screen name="ChiTietYeuCau" component={ChiTietYeuCau} />
             <Stack.Screen name="SetUpTour" component={SetUpTour} />
             <Stack.Screen name="SignIn" component={SignIn} />

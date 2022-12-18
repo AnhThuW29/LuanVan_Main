@@ -22,9 +22,10 @@ import axiosClient from "../api/axiosClient";
 
 import image from "../assets/Bear.jpg";
 import { URL_IMAGES } from "../api/urlGetDataAPI";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../consts/CustomButton";
 import { Button } from "native-base";
+import { updatePoint } from "../redux/slice/pointNotification";
 
 const { width } = Dimensions.get("screen");
 
@@ -37,6 +38,8 @@ function HomeScreen({ navigation }) {
   const [hotel, setHotel] = useState([]);
   const [filter, setFilter] = useState([]);
   const [search, setSearch] = useState();
+  const dispatch = useDispatch();
+
 
   const [dataTourFavorite, setDataTourFavorite] = useState([]);
   const listFavorite = useSelector((s) => s.storeInforYeuThich.Tour);
@@ -308,6 +311,7 @@ function HomeScreen({ navigation }) {
     setRefreshing(true);
     wait(1000).then(() => setRefreshing(false));
     getDataToAPI();
+    dispatch(updatePoint(!pointNotifi));
   }, []);
 
   return (

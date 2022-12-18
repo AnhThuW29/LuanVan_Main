@@ -209,6 +209,24 @@ const AccountScreen = ({ navigation }) => {
                                         </Text>
                                     </View>
                                 </TouchableRipple>
+
+                                <TouchableRipple
+                                    onPress={() =>
+                                        navigation.navigate("ThongBaoclient")
+                                    }
+                                >
+                                    <View style={styles.menuItem}>
+                                        <Icon
+                                            name="question-answer"
+                                            color="#FF6347"
+                                            size={25}
+                                        />
+                                        <Text style={styles.menuItemText}>
+                                            Tour đã yêu cầu
+                                        </Text>
+                                    </View>
+                                </TouchableRipple>
+
                             </View>
                         ) : (
                             <></>
